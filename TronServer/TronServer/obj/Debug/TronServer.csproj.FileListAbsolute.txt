@@ -1,0 +1,6 @@
+C:\Users\Hax\source\repos\TronServer\TronServer\bin\Debug\TronServer.exe.config
+C:\Users\Hax\source\repos\TronServer\TronServer\bin\Debug\TronServer.exe
+C:\Users\Hax\source\repos\TronServer\TronServer\bin\Debug\TronServer.pdb
+C:\Users\Hax\source\repos\TronServer\TronServer\obj\Debug\TronServer.csprojAssemblyReference.cache
+C:\Users\Hax\source\repos\TronServer\TronServer\obj\Debug\TronServer.exe
+C:\Users\Hax\source\repos\TronServer\TronServer\obj\Debug\TronServer.pdb
