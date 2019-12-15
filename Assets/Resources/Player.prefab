@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5740784158853354643}
   - component: {fileID: 5740784158853354642}
-  - component: {fileID: 2588106789100106397}
+  - component: {fileID: 3438100956748999440}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -133,7 +133,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2588106789100106397
+--- !u!114 &3438100956748999440
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -142,13 +142,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5740784158853354640}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b61affabec6bab4da5beee85bc7ff28, type: 3}
+  m_Script: {fileID: 11500000, guid: f00ef4fc066c53c4384a5f20bf723d21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMoveSpeed: 0
-  boostActive: 0
-  boostAvailable: 0
-  killed: 0
 --- !u!1 &5740784159072868405
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,6 +200,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
