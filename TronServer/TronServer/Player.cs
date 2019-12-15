@@ -33,11 +33,11 @@ namespace TronServer
         public void byteArraysToFloats()
         {
             posX = BitConverter.ToSingle(bposX, 0);
-            posX = BitConverter.ToSingle(bposZ, 0);
-            posX = BitConverter.ToSingle(brotY, 0);
-            posX = BitConverter.ToSingle(brotW, 0);
-            posX = BitConverter.ToSingle(bvelX, 0);
-            posX = BitConverter.ToSingle(bvelZ, 0);
+            posZ = BitConverter.ToSingle(bposZ, 0);
+            rotY = BitConverter.ToSingle(brotY, 0);
+            rotW = BitConverter.ToSingle(brotW, 0);
+            velX = BitConverter.ToSingle(bvelX, 0);
+            velZ = BitConverter.ToSingle(bvelZ, 0);
         }
 
         public void IDToByteArray()
