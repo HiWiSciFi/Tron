@@ -66,6 +66,8 @@
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\GameSettings.cs" />
     <Compile Include="Assets\Scripts\Line.cs" />
+    <Compile Include="Assets\Scripts\Menu\MainMenuManager.cs" />
+    <Compile Include="Assets\Scripts\Menu\ResManager.cs" />
     <Compile Include="Assets\Scripts\NetworkCommunication.cs" />
     <Compile Include="Assets\Scripts\NeuralNetwork.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
