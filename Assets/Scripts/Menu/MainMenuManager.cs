@@ -15,15 +15,18 @@ public class MainMenuManager : MonoBehaviour
     {
         MainMenuPanel.SetActive(true);
         DrivePanel.SetActive(false);
+        newRandomMessage();
+    }
 
-        TextReader tr = new StreamReader("Assets/Resources/Messages.txt");
-        int NumberOfLines = TotalLines("Assets/Resources/Messages.txt");
+    private void newRandomMessage()
+    {
+        TextReader tr = new StreamReader("Assets/BuildResources/Messages.txt");
+        int NumberOfLines = TotalLines("Assets/BuildResources/Messages.txt");
         int r = Random.Range(0, NumberOfLines);
         for (int i = 0; i <= r; i++)
         {
             if (i == r)
             {
-                Debug.Log(r);
                 randomMessage.text = tr.ReadLine();
                 break;
             }
@@ -58,9 +61,10 @@ public class MainMenuManager : MonoBehaviour
     {
         MainMenuPanel.SetActive(true);
         DrivePanel.SetActive(false);
+        newRandomMessage();
     }
 
-    public void DoneButtonClicked()
+    public void ConnectButtonClicked()
     {
 
     }
