@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         int ID = 0;
-        if (!NetworkCommunication.Connect("localhost", 4444, 1, ref ID))
+        if (!NetworkCommunication.Connect("188.194.223.76", 15565, 1, ref ID))
         {
             Debug.LogError("Connection Failed");
         }

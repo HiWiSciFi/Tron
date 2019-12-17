@@ -105,9 +105,10 @@ namespace TronServer
 
         private static void StartServer()
         {
-            ipAd = IPAddress.Any;
-            Console.WriteLine("Starting listener on port " + port + " using IP " + ipAd);
-            listener = new TcpListener(ipAd, port);
+            //ipAd = IPAddress.Any;
+            //listener = new TcpListener(ipAd, port);
+            listener = TcpListener.Create(port);
+            Console.WriteLine("Starting listener on port " + port + " using IP " + "-");
 
             listener.Start();
 
