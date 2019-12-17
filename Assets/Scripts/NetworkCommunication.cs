@@ -13,6 +13,9 @@ public static class NetworkCommunication
     static ASCIIEncoding asen = new ASCIIEncoding();
     static NetworkStream stream;
     public static Controller localPlayer;
+    /// <summary>
+    /// true, if a connection exists and data is available
+    /// </summary>
     public static bool DataAvailable { get { return stream != null ? stream.DataAvailable : false; } }
 
     public static bool Connect(string IP, int port, int version, ref int ID)
