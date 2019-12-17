@@ -1,6 +1,7 @@
 # Tron
 
 ## TODO:
+- [ ] Client: basic Main Menu
 - [ ] Client: Playercontroller neu schreiben
 - [ ] Client: Main Menu mit Networking-class koppeln
 - [ ] Server: Lobby und Programm trennen
