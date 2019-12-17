@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System;
 using System.Linq;
+using System.Threading;
 
 public static class NetworkCommunication
 {
@@ -71,7 +72,32 @@ public static class NetworkCommunication
         client = null;
     }
 
+    static Thread t = new Thread(new ThreadStart(DataRead));
+
+    private static Transform data;
+    private static Rigidbody datarb;
     public static void ReadData()
+    {
+        if (localPlayer != null)
+        {
+            if (!t.IsAlive)
+            {
+                data = localPlayer.gameObject.transform;
+                datarb = localPlayer.gameObject.GetComponent<Rigidbody>();
+                t.Start();
+            }
+            lock (data)
+            {
+                data = localPlayer.gameObject.transform;
+            }
+            lock (datarb)
+            {
+                datarb = localPlayer.gameObject.GetComponent<Rigidbody>();
+            }
+        }
+    }
+
+    private static void DataRead()
     {
         while (DataAvailable)
         {
@@ -116,14 +142,28 @@ public static class NetworkCommunication
                 stream.Write(new byte[] { 0 }, 0, 1);
 
                 //send posX, posZ, rotY, rotW
-                Transform data = localPlayer.gameObject.transform;
-                Rigidbody datarb = localPlayer.gameObject.GetComponent<Rigidbody>();
-                byte[] posX = BitConverter.GetBytes(data.position.x);
-                byte[] posZ = BitConverter.GetBytes(data.position.z);
-                byte[] rotY = BitConverter.GetBytes(data.rotation.y);
-                byte[] rotW = BitConverter.GetBytes(data.rotation.w);
-                byte[] velX = BitConverter.GetBytes(datarb.velocity.x);
-                byte[] velZ = BitConverter.GetBytes(datarb.velocity.z);
+                byte[] posX;
+                byte[] posZ;
+                byte[] rotY;
+                byte[] rotW;
+
+                lock (data)
+                {
+                    posX = BitConverter.GetBytes(data.position.x);
+                    posZ = BitConverter.GetBytes(data.position.z);
+                    rotY = BitConverter.GetBytes(data.rotation.y);
+                    rotW = BitConverter.GetBytes(data.rotation.w);
+                }
+
+                byte[] velX;
+                byte[] velZ;
+
+                lock (datarb)
+                {
+                    velX = BitConverter.GetBytes(datarb.velocity.x);
+                    velZ = BitConverter.GetBytes(datarb.velocity.z);
+                }
+
                 byte[] toSend = new byte[24];
                 for (int i = 0; i < toSend.Length; i++)
                 {
