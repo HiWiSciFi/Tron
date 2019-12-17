@@ -1,0 +1,19 @@
+possible data:
+Color = 3 * float = 12 byte
+ID = 1 * int = 4 byte
+Rot = 1 * float = 4 byte
+Pos = 2 * float = 8 byte
+Boosted = 1 * bool = 1 byte
+request info = 1 * byte
+
+possible data packages:
+	new player connected:
+		ID, Color
+	game information:
+		Rot, Pos, Boosted
+	client side collission:
+		ID
+	server side kill player:
+		ID
+	Server request game information:
+		request info
