@@ -13,13 +13,13 @@ public class PlayerController : MonoBehaviour
         //Cursor.visible = false;
         //Cursor.lockState = CursorLockMode.Locked;
 
-        int ID = 0;
+        /*int ID = 0;
         if (!NetworkCommunication.Connect("localhost", 4444, 1, ref ID))
         {
             Debug.LogError("Connection Failed");
         }
 
-        NetworkCommunication.localPlayer = controller;
+        NetworkCommunication.localPlayer = controller;*/
     }
 
     private void Update()
