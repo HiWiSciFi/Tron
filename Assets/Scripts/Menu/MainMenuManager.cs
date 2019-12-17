@@ -48,11 +48,6 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    public void GenerateRandomMessage()
-    {
-
-    }
-
     public void PlayButtonClicked()
     {
         MainMenuPanel.SetActive(false);
