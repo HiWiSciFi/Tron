@@ -1,5 +1,8 @@
 # Tron
 
+- [x] Finish my homework
+- [ ] do fun things
+
 Communication Layouts: |
 -----------------------|
 ## Version check:
