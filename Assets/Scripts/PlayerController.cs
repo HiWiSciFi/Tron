@@ -8,8 +8,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
 
         int ID = 0;
         if (!NetworkCommunication.Connect("localhost", 4444, 1, ref ID))
