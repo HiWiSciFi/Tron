@@ -18,10 +18,12 @@ public class MainMenuManager : MonoBehaviour
         newRandomMessage();
     }
 
+    private const string messagesFile = "Assets/BuildResources/Messages.txt";
+
     private void newRandomMessage()
     {
-        TextReader tr = new StreamReader("Assets/BuildResources/Messages.txt");
-        int NumberOfLines = TotalLines("Assets/BuildResources/Messages.txt");
+        TextReader tr = new StreamReader(messagesFile);
+        int NumberOfLines = TotalLines(messagesFile);
         int r = Random.Range(0, NumberOfLines);
         for (int i = 0; i <= r; i++)
         {

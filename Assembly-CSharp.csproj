@@ -74,7 +74,6 @@
     <Compile Include="Assets\Scripts\PlayerSettings.cs" />
     <None Include="Assets\Materials\NewSurfaceShader.shader" />
     <None Include="Assets\BuildResources\Messages.txt" />
-    <None Include="Assets\Save.txt" />
     <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
       <HintPath>D:/Projekte/Unity/Tron/Library/ScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
     </Reference>

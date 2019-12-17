@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        PlayerSettings.Load();
+
         //Cursor.visible = false;
         //Cursor.lockState = CursorLockMode.Locked;
 
