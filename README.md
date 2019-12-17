@@ -3,10 +3,10 @@
 Communication Layouts: |
 -----------------------|
 ## Version check:
-![Version check](/VersionCheck.png) |
+![Version check](/images/VersionCheck.png) |
 ## Player connected:
-![Player connected](/PlayerConnected.png) |
+![Player connected](/images/PlayerConnected.png) |
 ## Transmit data:
-![Transmit data](/TransmitData.png) |
+![Transmit data](/images/TransmitData.png) |
 ## Kill player:
-![Kill player](/KillPlayer.png) |
+![Kill player](/images/KillPlayer.png) |
