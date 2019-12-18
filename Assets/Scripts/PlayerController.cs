@@ -1,30 +1,25 @@
-﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
-{
-    private Controller controller;
-
-    private void Start()
-    {
-        PlayerSettings.Load();
-
-        //Cursor.visible = false;
-        //Cursor.lockState = CursorLockMode.Locked;
-
-        /*int ID = 0;
-        if (!NetworkCommunication.Connect("localhost", 4444, 1, ref ID))
-        {
-            Debug.LogError("Connection Failed");
-        }
-
-        NetworkCommunication.localPlayer = controller;*/
-    }
-
-    private void Update()
-    {
-        if (NetworkCommunication.DataAvailable)
-            NetworkCommunication.ReadData();
-    }
+public class PlayerController : MonoBehaviour {
+	
+	//mouse variables
+	private float rotY = 0f;
+	private const float rotationStrength = 1.0f;
+	// private Quaternion q = new Quaternion(0, 0, 0, Quaternion.Identity);
+	
+	private void Start() {
+		//set rotX for mouse rotation
+		rotX = transform.localRotation.eulerAngles;
+	}
+	
+	private void Update() {
+		
+		//turn player with mouse
+		float mouseX = Input.GetAxis("Mouse X");
+		rotY += mouseX * PlayerSettings.mouseSpeed * Time.deltaTime;
+		// q = Quaternion.Euler(0f, rotY, 0f);
+		transform.rotation = Quaternion.Euler(0f, rotY, 0f);
+	}
 }
