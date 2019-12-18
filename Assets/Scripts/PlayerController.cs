@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour {
 	
 	private void Start() {
 		//set rotX for mouse rotation
-		rotX = transform.localRotation.eulerAngles;
+		rotY = transform.localRotation.eulerAngles.y;
 	}
 	
 	private void Update() {
