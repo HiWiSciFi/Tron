@@ -3,11 +3,13 @@ using System.Net;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
+using System.Linq;
 
 public static class newNetworkCommunication {
 
 	private static TcpClient client;
 	private static NetworkStream stream;
+	public const byte VERSION = 1;
 
 	public static bool DataAvailable { get { return stream != null ? stream.DataAvailable : false; } }
 
@@ -29,8 +31,20 @@ public static class newNetworkCommunication {
 			return 1;
 		}
 
-		//handshake
+		// handshake
+		while (!DataAvailable);
+		byte version = Receive()[0];
+		stream.Write(new byte[] { 1, VERSION }, 0, 2);
 
+		if (version != VERSION)
+		{
+			Debug.LogError("Server and client versions not matching - Server: " + version + " Client: " + VERSION);
+			return 2;
+		}
+		else
+		{
+			Debug.Log("Versions matching");
+		}
 
 		Debug.Log("Handshake successful");
 		return 0;
@@ -66,17 +80,28 @@ public static class newNetworkCommunication {
 
 	public static byte[] Receive()
 	{
-		byte[] buffer = new byte[1];
-		stream.Read(buffer, 0, 1);
+		byte[] header = new byte[1];
+		stream.Read(header, 0, 1);
 
-		for (int i = 0; i < buffer[0]; i++)
-		{
-
-		}
-
-		byte[] information = new byte[buffer[0]];
-		stream.Read(information, 0, buffer[0]);
+		byte[] data = new byte[header[0]];
+		stream.Read(data, 0, header[0]);
 		
-		return new byte[4];
+		return data;
+	}
+
+	public static byte[][] SplitInformation(byte[] data)
+	{
+		byte[] index = data.Take(data[1] - 1).ToArray();
+		byte[] information = data.Skip(data[1] - 1).ToArray();
+
+		byte[][] toReturn = new byte[index.Length / 2][];
+
+		for (int i= 0; i < index.Length / 2; i++)
+		{
+			byte[] currentIndex = index.Skip(i * 2).ToArray().Take(2).ToArray();
+			toReturn[i] = new byte[currentIndex[1] + 1];
+			toReturn[i][0] = currentIndex[0];
+		}
+		return toReturn;
 	}
 }
