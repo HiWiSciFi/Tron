@@ -10,6 +10,8 @@ public class MainMenuManager : MonoBehaviour
     public Text randomMessage;
     public GameObject MainMenuPanel;
     public GameObject DrivePanel;
+    public InputField IPAddressField;
+    public InputField PortField;
 
     private void Start()
     {
@@ -63,7 +65,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void ConnectButtonClicked()
     {
-
+        newNetworkCommunication.Connect(IPAddressField.text, int.Parse(PortField.text));
     }
 
     public void QuitButtonClicked()

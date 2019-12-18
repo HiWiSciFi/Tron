@@ -25,7 +25,7 @@ public static class newNetworkCommunication {
 			stream = client.GetStream();
 			Debug.Log("Connected");
 		} catch {
-			Debug.LogError("Could not connect to server " + IP + " at " + PORT);
+			Debug.LogError("Could not connect to " + IP + " at " + PORT);
 			return 1;
 		}
 
@@ -58,8 +58,25 @@ public static class newNetworkCommunication {
 		List<byte> package = new List<byte>();
 		package.Add((byte)(IIDs.Count + information.Count));
 		package.AddRange(IIDs);
+		package.Add(2);
 		package.AddRange(information);
 
 		stream.Write(package.ToArray(), 0, package.Count);
+	}
+
+	public static byte[] Receive()
+	{
+		byte[] buffer = new byte[1];
+		stream.Read(buffer, 0, 1);
+
+		for (int i = 0; i < buffer[0]; i++)
+		{
+
+		}
+
+		byte[] information = new byte[buffer[0]];
+		stream.Read(information, 0, buffer[0]);
+		
+		return new byte[4];
 	}
 }
