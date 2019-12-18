@@ -63,16 +63,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Controller.cs" />
-    <Compile Include="Assets\Scripts\GameSettings.cs" />
-    <Compile Include="Assets\Scripts\Line.cs" />
+    <Compile Include="Assets\Scripts\Game\Controller.cs" />
+    <Compile Include="Assets\Scripts\Game\GameSettings.cs" />
+    <Compile Include="Assets\Scripts\Game\Line.cs" />
+    <Compile Include="Assets\Scripts\Game\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Game\PlayerSettings.cs" />
     <Compile Include="Assets\Scripts\Menu\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\Menu\ResManager.cs" />
-    <Compile Include="Assets\Scripts\NetworkCommunication.cs" />
-    <Compile Include="Assets\Scripts\NeuralNetwork.cs" />
-    <Compile Include="Assets\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\Scripts\PlayerSettings.cs" />
-    <Compile Include="Assets\Scripts\newNetworkCommunication.cs" />
+    <Compile Include="Assets\Scripts\Network\NetworkBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Network\NetworkCommunication.cs" />
+    <Compile Include="Assets\Scripts\Network\newNetworkCommunication.cs" />
     <None Include="Assets\Materials\NewSurfaceShader.shader" />
     <None Include="Assets\BuildResources\settings.txt" />
     <None Include="Assets\BuildResources\Messages.txt" />
