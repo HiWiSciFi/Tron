@@ -18,10 +18,11 @@ namespace TronServerNeu
         public float rotY, rotW;
         public float velX, velZ;
 
-        public Player(Socket socket, byte ID)
+        public Player(Socket socket_, byte ID_)
         {
-            this.socket = socket;
-            this.ID = ID;
+            socket = socket_;
+            ID = ID_;
         }
+        
     }
 }

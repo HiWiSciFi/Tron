@@ -105,6 +105,23 @@ namespace TronServerNeu
         }
 
         /// <summary>
+        /// initialises important variables:
+        ///     freeIDs
+        ///     players
+        ///     inLobyPlayers
+        ///     pendingPlayers
+        /// </summary>
+        private static void PreStart()
+        {
+            freeIDs = new FreeIDs();
+            players = new List<Player>();
+            inLobyPlayers = new List<Player>();
+            pendingPlayers = new List<Player>();
+
+            Console.WriteLine("prestart procedings have been dealt with");
+        }
+
+        /// <summary>
         /// Starting TcpListener on ipEp
         /// </summary>
         private static void StartServer()
@@ -124,23 +141,7 @@ namespace TronServerNeu
             Console.WriteLine("----------------------------------");
         }
 
-        /// <summary>
-        /// initialises important variables:
-        ///     freeIDs
-        ///     players
-        ///     inLobyPlayers
-        ///     pendingPlayers
-        /// </summary>
-        private static void PreStart()
-        {
-            freeIDs = new FreeIDs();
-            players = new List<Player>();
-            inLobyPlayers = new List<Player>();
-            pendingPlayers = new List<Player>();
-
-            Console.WriteLine("prestart procedings have been dealt with");
-        }
-
+        
         private static void Loop()
         {
             try
@@ -195,13 +196,55 @@ namespace TronServerNeu
 
         private static void AkwardHandshaking()
         {
-            Console.WriteLine();
-            Console.WriteLine("Connection available...");
-            Socket socket = listener.AcceptSocket();
+            while (listener.Pending())
+            {
+                Console.WriteLine();
+                Console.WriteLine("Connection available...");
+                Socket socket = listener.AcceptSocket();
 
-            Console.WriteLine("Compare versions...");
-            Console.WriteLine("Server version: " + version);
+                Console.WriteLine("Compare versions...");
+                Console.WriteLine("Server version: " + version);
+                socket.Send(new byte[] { 1,version });
 
+                byte[] rec = new byte[2];
+                socket.Receive(rec,2,SocketFlags.None);
+                Console.WriteLine("Client version: " + rec);
+
+                if (rec.Equals(version))
+                {
+                    Console.WriteLine("versions match");
+                    InitialisePlayer(socket);
+                }
+            }
+        }
+
+        private static void InitialisePlayer(Socket socket)
+        {
+            Player player = new Player(socket,freeIDs.Pop());
+            Console.Out.WriteLine("Player with ID:" + player.ID + "created");
+            players.Add(player);
+            pendingPlayers.Add(player);
+        }
+
+        private static void AddPendingPlayer(Player player)
+        {
+            if (!players.Contains(player))
+            {
+                players.Add(player);
+                pendingPlayers.Add(player);
+            }
+            else
+            {
+                if (inLobyPlayers.Contains(player)) {
+                    inLobyPlayers.Remove(player);
+                    pendingPlayers.Add(player);
+                }
+                else if (!pendingPlayers.Contains(player))
+                {
+                    pendingPlayers.Add(player);
+                }
+            }
+            
         }
 
         private static bool SocketConnected(Socket s)
