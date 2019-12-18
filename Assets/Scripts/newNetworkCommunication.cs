@@ -2,14 +2,14 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 
-public static class NetworkCommunication {
+public static class newNetworkCommunication {
 	
-	TcpClient client;
+	static TcpClient client;
 	
-	public static bool Connect(string IP, string PORT) {
+	public static bool Connect(string IP, int PORT) {
 		try {
-			client = new TcpClient(IP, PORT);
-			client.Connect();
+			client = new TcpClient();
+			client.Connect(IP, PORT);
 		} catch {
 			
 			return false;
