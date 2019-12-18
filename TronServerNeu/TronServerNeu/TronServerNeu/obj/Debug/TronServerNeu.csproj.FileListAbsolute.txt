@@ -1,1 +1,6 @@
 C:\Users\maxir\OneDrive\Dokumente\GitHub\Tron\TronServerNeu\TronServerNeu\TronServerNeu\obj\Debug\TronServerNeu.csprojAssemblyReference.cache
+C:\Users\maxir\OneDrive\Dokumente\GitHub\Tron\TronServerNeu\TronServerNeu\TronServerNeu\bin\Debug\TronServerNeu.exe.config
+C:\Users\maxir\OneDrive\Dokumente\GitHub\Tron\TronServerNeu\TronServerNeu\TronServerNeu\bin\Debug\TronServerNeu.exe
+C:\Users\maxir\OneDrive\Dokumente\GitHub\Tron\TronServerNeu\TronServerNeu\TronServerNeu\bin\Debug\TronServerNeu.pdb
+C:\Users\maxir\OneDrive\Dokumente\GitHub\Tron\TronServerNeu\TronServerNeu\TronServerNeu\obj\Debug\TronServerNeu.exe
+C:\Users\maxir\OneDrive\Dokumente\GitHub\Tron\TronServerNeu\TronServerNeu\TronServerNeu\obj\Debug\TronServerNeu.pdb
