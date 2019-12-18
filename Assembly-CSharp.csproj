@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\NeuralNetwork.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\PlayerSettings.cs" />
+    <Compile Include="Assets\Scripts\newNetworkCommunication.cs" />
     <None Include="Assets\Materials\NewSurfaceShader.shader" />
     <None Include="Assets\BuildResources\settings.txt" />
     <None Include="Assets\BuildResources\Messages.txt" />
