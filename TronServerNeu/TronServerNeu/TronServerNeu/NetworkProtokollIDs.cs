@@ -40,17 +40,29 @@ namespace TronServerNeu
 
         public static byte[] Receive(Socket socket)
         {
-           List<ArraySegment<byte>> buffer = new List<ArraySegment<byte>>();
             
-            socket.Receive(buffer);
-            
-            byte[] toReturn = new byte[buffer.Count];
-            for (int i = 0; i < buffer.Count; i++)
+            byte[] header = new byte[1];
+            socket.Receive(header,1,SocketFlags.None);
+
+            byte[] data = new byte[header[0]];
+            socket.Receive(data,header[0],SocketFlags.None);
+            return data;
+        }
+
+        public static byte[][] SplitInformation(byte[] daten)
+        {
+
+            byte[] index = daten.Take((int)daten[2] - 1).ToArray();
+            byte[] information = daten.Skip((int)daten[2] - 1).ToArray();
+
+            byte[][] toReturn = new byte[index.Length / 2][];
+
+            for (int i = 0; i < index.Length / 2; i++)
             {
-                toReturn[i] = buffer[i].Array.ToArray<byte>()[0];
+                byte[] currentIndex = index.Skip(i*2).ToArray().Take(2).ToArray();
+                toReturn[i] = new byte[currentIndex[1] + 1];
+                toReturn[i][0] = currentIndex[0];
             }
-
-
             return toReturn;
         }
 
