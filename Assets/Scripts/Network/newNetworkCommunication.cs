@@ -2,9 +2,10 @@ using System;
 using System.Net;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using UnityEngine;
 
 public static class newNetworkCommunication {
-	
+
 	private static TcpClient client;
 	private static NetworkStream stream;
 
@@ -18,17 +19,20 @@ public static class newNetworkCommunication {
 	/// <returns>Error Codes: 0 = everthing fine, 1 = could not connect, 2 = versions not matching</returns>
 	public static int Connect(string IP, int PORT) {
 		try {
+			Debug.Log("Connecting to " + IP + " at " + PORT + "...");
 			client = new TcpClient();
 			client.Connect(IP, PORT);
 			stream = client.GetStream();
+			Debug.Log("Connected");
 		} catch {
-			
+			Debug.LogError("Could not connect to server " + IP + " at " + PORT);
 			return 1;
 		}
-		
+
 		//handshake
-		
-		
+
+
+		Debug.Log("Handshake successful");
 		return 0;
 	}
 

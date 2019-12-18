@@ -49,6 +49,10 @@ public class PlayerController : NetworkBehaviour {
 					StartCoroutine(BoostCountdown());
 				}
 			}
+			else
+			{
+				// not local player
+			}
 
 			// move player forward
 			transform.Translate(new Vector3(0, 0, movingSpeed * Time.deltaTime + boosted * boostMultiplier * movingSpeed * Time.deltaTime), Space.Self);
