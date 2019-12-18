@@ -11,7 +11,7 @@ namespace TronServerNeu
         private Stack<byte> freieIDs;
 
         public FreeIDs() {
-            Stack<byte> freieIDs = new Stack<byte> {};
+            Stack<byte> freieIDs = new Stack<byte>();
             freieIDs.Push(0);
         }
 
