@@ -1,6 +1,6 @@
-# Tron
+# Tron Multiplayer project
 
-## TODO:
+# TODO:
 - [x] Client: basic Main Menu
 - [ ] Client: Playercontroller neu schreiben
 - [ ] Client: Networking-class neu schreiben (neues Protokoll)
@@ -8,7 +8,7 @@
 - [ ] Server: Lobby und Programm trennen
 - [ ] Server: Multithreading
 
-## Communication Layouts:
+# Communication Layouts:
 ## Version check:
 ![Version check](/images/VersionCheck.png)
 ## Player connected:
