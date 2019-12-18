@@ -150,7 +150,7 @@ namespace TronServerNeu
                 while (true)
                 {
                     HandleConections();
-
+                    
 
                 }
 
@@ -204,7 +204,7 @@ namespace TronServerNeu
 
                 Console.WriteLine("Compare versions...");
                 Console.WriteLine("Server version: " + version);
-                socket.Send(new byte[] { 1,version });
+                NetworkProtokoll.Send(socket,new byte[] { version });
 
                 byte[] rec = new byte[2];
                 socket.Receive(rec,2,SocketFlags.None);
