@@ -45,7 +45,7 @@ namespace TronServerNeu
             return freieIDs.Peek();
         }
 
-        public void Sort()
+        public void Reorganise()
         {
             //https://dotnetfiddle.net/4lkxg3
 
