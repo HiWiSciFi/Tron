@@ -268,11 +268,16 @@ namespace TronServerNeu
             {
                 case NetworkProtokoll.ID.standart:
                     player.data = data.Skip(0).ToArray();
+
                     byte[] broadcast = new byte[data.Length + 1];
                     broadcast[0] = data[0];
                     broadcast[1] = player.ID;
                     Array.Copy(data, 1, broadcast, 2, data.Length - 1);
-                    NetworkProtokoll.Broadcast(inLobyPlayers, broadcast);
+
+                    List<Player> inLobyPlayersWhithoutPlayer = new List<Player>(inLobyPlayers);
+                    inLobyPlayersWhithoutPlayer.Remove(player);
+
+                    NetworkProtokoll.Broadcast(inLobyPlayersWhithoutPlayer, broadcast);
                     break;
 
                 case NetworkProtokoll.ID.info:
