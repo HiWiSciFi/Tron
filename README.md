@@ -9,6 +9,8 @@
 - [ ] Server: Multithreading
 
 # Communication Layouts:
+##IIDs:
+![IIDs](/images/IIDs.png)
 ## Version check:
 ![Version check](/images/VersionCheck.png)
 ## Player connected:
