@@ -8,15 +8,14 @@
 - [ ] Server: Lobby und Programm trennen
 - [ ] Server: Multithreading
 
-## Communication Layouts: |
------------------------|
+## Communication Layouts:
 ## Version check:
-![Version check](/images/VersionCheck.png) |
+![Version check](/images/VersionCheck.png)
 ## Player connected:
-![Player connected](/images/PlayerConnected.png) |
+![Player connected](/images/PlayerConnected.png)
 ## Transmit data:
-![Transmit data](/images/TransmitData.png) |
+![Transmit data](/images/TransmitData.png)
 ## Kill player:
-![Kill player](/images/KillPlayer.png) |
+![Kill player](/images/KillPlayer.png)
 ## Netzwerkprotokoll
-![Netzwerkprotokoll](/images/Netzwerkprotokoll.png) |
+![Netzwerkprotokoll](/images/Netzwerkprotokoll.png)
