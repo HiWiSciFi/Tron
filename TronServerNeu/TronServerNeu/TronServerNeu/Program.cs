@@ -150,7 +150,8 @@ namespace TronServerNeu
                 while (true)
                 {
                     HandleConections();
-                    
+
+                    UpdateData();
 
                 }
 
@@ -180,7 +181,7 @@ namespace TronServerNeu
                     Console.WriteLine("Informing Clients");
                     if (inLobyPlayers.Contains(players[i]))
                     {
-                        byte[] message = new byte[] { 4, 2, players[i].ID };
+                        byte[] message = new byte[] { NetworkProtokoll.ID.playerDisconect, 2, players[i].ID };
                         for (int j = 0; j < players.Count; j++)
                         {
                             if (j != i)
@@ -237,9 +238,65 @@ namespace TronServerNeu
         private static void InitialisePlayer(Socket socket)
         {
             Player player = new Player(socket,freeIDs.Pop());
-            Console.Out.WriteLine("Player with ID:" + player.ID + "created");
+            Console.Out.WriteLine("Player with ID:" + player.ID + " created");
             players.Add(player);
             pendingPlayers.Add(player);
+        }
+
+        private static void UpdateData()
+        {
+            UpdateLobyData();
+        }
+
+        private static void UpdateLobyData()
+        {
+            for (int i = 0; i < inLobyPlayers.Count; i++)
+            {
+                if (inLobyPlayers[i].socket.Available > 0) {
+                    byte[][] data = NetworkProtokoll.SplitInformation(NetworkProtokoll.Receive(inLobyPlayers[i].socket));
+                    for(int j = 0; j < data.Length; j++)
+                    {
+                        Swichero(data[j],inLobyPlayers[i]);
+                    }
+                }
+            }
+        }
+
+        private static void Swichero(byte[] data, Player player)
+        {
+            switch (data[0])
+            {
+                case NetworkProtokoll.ID.standart:
+                    player.data = data.Skip(0).ToArray();
+                    byte[] broadcast = new byte[data.Length + 1];
+                    broadcast[0] = data[0];
+                    broadcast[1] = player.ID;
+                    Array.Copy(data, 1, broadcast, 2, data.Length - 1);
+                    NetworkProtokoll.Broadcast(inLobyPlayers, broadcast);
+                    break;
+
+                case NetworkProtokoll.ID.info:
+
+                    break;
+
+                case NetworkProtokoll.ID.col:
+
+                    break;
+
+                case NetworkProtokoll.ID.kill:
+
+                    break;
+
+                case NetworkProtokoll.ID.playerDisconect:
+
+                    break;
+
+            }
+        }
+
+        private static void UpdatePendingData()
+        {
+
         }
 
         private static void AddPendingPlayer(Player player)

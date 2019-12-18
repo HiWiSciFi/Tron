@@ -14,9 +14,15 @@ namespace TronServerNeu
 
         public byte ID;
 
-        public float posX, posZ;
-        public float rotY, rotW;
-        public float velX, velZ;
+        public byte[] color;
+
+        public byte[] data;
+
+        
+
+        //public float posX, posZ;
+        //public float rotY, rotW;
+        //public float velX, velZ;
 
         public Player(Socket socket_, byte ID_)
         {

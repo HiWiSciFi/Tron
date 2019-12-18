@@ -19,7 +19,7 @@ namespace TronServerNeu
         {
             freieIDs.Push(ID_);
         }
-
+        
         public byte Pop()
         {
             if(freieIDs.Count > 1)

@@ -14,11 +14,22 @@ namespace TronServerNeu
 
         public static class ID
         {
-            public const byte playerDisconect = 0;
-            public static class PlayerDisconect
-            {
-                public const byte cause1 = 0;
-            }
+            public const byte playerDisconect = 4;
+            // 1 byte id
+
+            public const byte standart = 0;
+            // ?32? byte pos, rot, boosted
+
+            public const byte info = 1;
+            // 4 byte ID 1 byte, color 3 byte
+
+            public const byte col = 2;
+            // 1 byte ID
+
+            public const byte kill = 3;
+            // 1 byte ID
+
+
 
         }
 
@@ -36,6 +47,14 @@ namespace TronServerNeu
             Array.Copy(data,0,buffer,1,data.Length);
 
             socket.Send(buffer);
+        }
+
+        public static void Broadcast(List<Player> players, byte[] data)
+        {
+            for(int i = 0; i < players.Count; i++)
+            {
+                Send(players[i].socket, data);
+            }
         }
 
         
