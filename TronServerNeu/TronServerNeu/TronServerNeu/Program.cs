@@ -41,34 +41,44 @@ namespace TronServerNeu
         /// </param>
         static void Main(string[] args)
         {
-            ProcessArgs(args);
+            if (!ProcessArgs(args))
+            {
+                Console.WriteLine("arguments missing");
+                return;
+            }
 
             PreStart();
-
             StartServer();
+
+            Loop();
             
         }
 
-        
         /// <summary>
         /// Reading the arguments and seting version and ipEp
         /// </summary>
         /// <param name="args">
         /// first argument listenport:<port>
         /// secund argument gameversion:<version>
-        /// </param>
-        private static void ProcessArgs(string[] args)
+        /// </param
+        /// <returns>whether version and ipEp was found</returns>
+        private static bool ProcessArgs(string[] args)
         {
+            bool portFound = false;
+            bool versionFound = false;
+
             for (int i = 0; i < args.Length; i++)
             {
                 if (args[i].ToLower().StartsWith("listenport:"))
                 {
+                    
+
                     try
                     {
                         string[] split = args[i].Split(':');
 
                         ipEp = new IPEndPoint(IPAddress.Any,int.Parse(split[1]));
-                        
+                        portFound = true;
                         continue;
                     }
                     catch (Exception e){
@@ -82,6 +92,7 @@ namespace TronServerNeu
                     {
                         string[] split = args[i].Split(':');
                         version = byte.Parse(split[1]);
+                        versionFound = true;
                         continue;
                     }
                     catch (Exception e)
@@ -90,6 +101,7 @@ namespace TronServerNeu
                     }
                 }
             }
+            return portFound && versionFound;
         }
 
         /// <summary>
@@ -106,7 +118,7 @@ namespace TronServerNeu
 
             Console.WriteLine("Server running on port " + ipEp);
 
-            //legac vielleicht gut: connectedPlayers = new List<Player>();
+            //legac vielleicht gut: players = new List<Player>();
 
             Console.WriteLine("Server started");
             Console.WriteLine("----------------------------------");
@@ -127,6 +139,76 @@ namespace TronServerNeu
             pendingPlayers = new List<Player>();
 
             Console.WriteLine("prestart procedings have been dealt with");
+        }
+
+        private static void Loop()
+        {
+            try
+            {
+
+                while (true)
+                {
+                    HandleConections();
+
+
+                }
+
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        private static void HandleConections()
+        {
+
+            HandleDisconects();
+            AkwardHandshaking();
+        }
+
+
+        private static void HandleDisconects()
+        {
+            for (int i = 0; i < players.Count; i++)
+            {
+                if (!SocketConnected(players[i].socket))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Player " + players[i].ID + " Disconnected");
+                    Console.WriteLine("Informing Clients");
+                    for (int j = 0; j < players.Count; j++)
+                    {
+                        if (j != i)
+                        {
+                            //notify players 
+                            throw new NotImplementedException();
+                        }
+                    }
+                    Console.WriteLine("Clients informed, removing player");
+                    players.RemoveAt(i);
+                    Console.WriteLine("Player removed");
+                    Console.WriteLine();
+                }
+            }
+        }
+
+        private static void AkwardHandshaking()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Connection available...");
+            Socket socket = listener.AcceptSocket();
+
+            Console.WriteLine("Compare versions...");
+            Console.WriteLine("Server version: " + version);
+
+        }
+
+        private static bool SocketConnected(Socket s)
+        {
+            bool part1 = s.Poll(1000, SelectMode.SelectRead);
+            bool part2 = (s.Available == 0);
+            return !(part1 && part2);
         }
     }
 }
