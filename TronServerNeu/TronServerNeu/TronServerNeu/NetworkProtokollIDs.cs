@@ -38,6 +38,8 @@ namespace TronServerNeu
             socket.Send(buffer);
         }
 
+        
+
         public static byte[] Receive(Socket socket)
         {
             
@@ -52,14 +54,18 @@ namespace TronServerNeu
         public static byte[][] SplitInformation(byte[] daten)
         {
 
-            byte[] index = daten.Take((int)daten[2] - 1).ToArray();
-            byte[] information = daten.Skip((int)daten[2] - 1).ToArray();
+            byte[] index = daten.Take(daten[1] - 1).ToArray();
+            byte[] information = daten.Skip(daten[1] - 1).ToArray();
 
             byte[][] toReturn = new byte[index.Length / 2][];
 
             for (int i = 0; i < index.Length / 2; i++)
             {
-                byte[] currentIndex = index.Skip(i*2).ToArray().Take(2).ToArray();
+                byte[] currentIndex = index
+                    .Skip(i*2)
+                    .ToArray()
+                    .Take(2)
+                    .ToArray();
                 toReturn[i] = new byte[currentIndex[1] + 1];
                 toReturn[i][0] = currentIndex[0];
             }

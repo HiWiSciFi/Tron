@@ -178,16 +178,26 @@ namespace TronServerNeu
                     Console.WriteLine();
                     Console.WriteLine("Player " + players[i].ID + " Disconnected");
                     Console.WriteLine("Informing Clients");
-                    for (int j = 0; j < players.Count; j++)
+                    if (inLobyPlayers.Contains(players[i]))
                     {
-                        if (j != i)
+                        byte[] message = new byte[] { 4, 2, players[i].ID };
+                        for (int j = 0; j < players.Count; j++)
                         {
-                            //notify players 
-                            throw new NotImplementedException();
+                            if (j != i)
+                            {
+                                NetworkProtokoll.Send(players[j].socket,message);
+                            }
                         }
+                        Console.WriteLine("Clients informed, removing player");
+                        inLobyPlayers.Remove(players[i]);
                     }
-                    Console.WriteLine("Clients informed, removing player");
+                    else
+                    {
+                        pendingPlayers.Remove(players[i]);
+                    }
+
                     players.RemoveAt(i);
+
                     Console.WriteLine("Player removed");
                     Console.WriteLine();
                 }
@@ -206,8 +216,14 @@ namespace TronServerNeu
                 Console.WriteLine("Server version: " + version);
                 NetworkProtokoll.Send(socket,new byte[] { version });
 
-                byte[] rec = new byte[2];
-                socket.Receive(rec,2,SocketFlags.None);
+                byte rec = 0;
+                try
+                {
+                    rec = NetworkProtokoll.Receive(socket)[0];
+                }catch (Exception e) 
+                {
+                    Console.WriteLine(e); 
+                }
                 Console.WriteLine("Client version: " + rec);
 
                 if (rec.Equals(version))
