@@ -29,6 +29,8 @@ namespace TronServerNeu
             public const byte kill = 3;
             // 1 byte ID
 
+            public const byte startLoby = 5;
+            // 1 byte weil muss
 
 
         }

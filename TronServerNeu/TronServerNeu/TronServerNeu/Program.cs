@@ -254,6 +254,7 @@ namespace TronServerNeu
             player.color[1] = (byte)new Random().Next(0, 255);
             player.color[2] = (byte)new Random().Next(0, 255);
             NetworkProtokoll.Send(player.socket,new byte[] { NetworkProtokoll.ID.info, 1,player.ID,player.color[0],player.color[1],player.color[2]});
+            //loby?
         }
 
         private static void UpdateData()
@@ -324,14 +325,15 @@ namespace TronServerNeu
         public static void NewLoby()
         {
             inLobbyPlayers = new List<Player>(pendingPlayers.Take(lobySzise));
+            NetworkProtokoll.Broadcast(inLobbyPlayers,new byte[] { NetworkProtokoll.ID.startLoby, 1, 0});
             for(int i = 0; i < inLobbyPlayers.Count; i++)
             {
                 List<Player> inLobyPlayersWhithoutPlayer = new List<Player>(inLobbyPlayers);
                 inLobyPlayersWhithoutPlayer.Remove(inLobbyPlayers[i]);
 
-                byte[] infoToBroadcast = new byte[] { NetworkProtokoll.ID.info, inLobbyPlayers[i].ID, 0, 0, 0};
+                byte[] infoToBroadcast = new byte[] { NetworkProtokoll.ID.info, 1, inLobbyPlayers[i].ID, 0, 0, 0};
 
-                Array.Copy(inLobbyPlayers[i].color, 0, infoToBroadcast, 2, 3);
+                Array.Copy(inLobbyPlayers[i].color, 0, infoToBroadcast, 3, 3);
 
                 NetworkProtokoll.Broadcast(inLobyPlayersWhithoutPlayer,infoToBroadcast);
             }
