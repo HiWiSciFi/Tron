@@ -74,7 +74,9 @@ namespace TronServerNeu
             {
                 freieIDs.Pop();
             }
-            if (freieIDs.Count == 1) {
+            if (freieIDs.Count == 0) {
+                Push(0);
+            }else if(freieIDs.Count == 1){
                 Pop();
             }
             else {
