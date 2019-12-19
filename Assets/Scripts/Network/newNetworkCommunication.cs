@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public static class newNetworkCommunication {
 
@@ -12,6 +13,15 @@ public static class newNetworkCommunication {
 	public const byte VERSION = 1;
 
 	public static bool DataAvailable { get { return stream != null ? stream.DataAvailable : false; } }
+
+	public static void Disconnect()
+	{
+		stream.Close();
+		stream.Dispose();
+		client.Close();
+		client.Dispose();
+		SceneManager.LoadScene(0);
+	}
 
 	/// <summary>
 	/// Connects to a server and does the handshake
