@@ -30,6 +30,7 @@ namespace TronServerNeu
         {
             socket = socket_;
             ID = ID_;
+            color = new byte[3];
         }
         
     }
