@@ -14,12 +14,16 @@ public static class newNetworkCommunication {
 
 	public static bool DataAvailable { get { return stream != null ? stream.DataAvailable : false; } }
 
+	/// <summary>
+	/// disconnect from server
+	/// </summary>
 	public static void Disconnect()
 	{
 		stream.Close();
 		stream.Dispose();
 		client.Close();
-		client.Dispose();
+		stream = null;
+		client = null;
 		SceneManager.LoadScene(0);
 	}
 
