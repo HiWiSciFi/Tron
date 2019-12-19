@@ -3,7 +3,7 @@
 # TODO:
 - [x] Client: basic Main Menu
 - [x] Client: Playercontroller neu schreiben
-- [ ] Client: Networking-class neu schreiben (neues Protokoll)
+- [x] Client: Networking-class neu schreiben (neues Protokoll)
 - [x] Client: Main Menu mit Networking-class koppeln
 - [ ] Server: Lobby und Programm trennen
 - [ ] Server: Multithreading
