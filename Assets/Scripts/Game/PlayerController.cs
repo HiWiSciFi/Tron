@@ -71,6 +71,11 @@ public class PlayerController : NetworkBehaviour {
 				transform.Translate(new Vector3(0, 0, movingSpeed * Time.deltaTime + boosted * boostMultiplier * movingSpeed * Time.deltaTime), Space.Self);
 			}
 		}
+
+		if (local && Input.GetKeyDown(KeyCode.Escape))
+		{
+			newNetworkCommunication.Disconnect();
+		}
 	}
 
 	private IEnumerator BoostCountdown()
@@ -85,10 +90,13 @@ public class PlayerController : NetworkBehaviour {
 
 	public void setColor(Color color)
 	{
-		Material m = new Material(GetComponentInChildren<MeshRenderer>().sharedMaterial.shader);
+		/*Material m = new Material(GetComponentInChildren<MeshRenderer>().sharedMaterial.shader);
 		m.name = "generated material";
 		m.CopyPropertiesFromMaterial(GetComponentInChildren<MeshRenderer>().sharedMaterial);
 		m.SetColor("_Color", color);
-		GetComponentInChildren<MeshRenderer>().sharedMaterial = m;
+		GetComponentInChildren<MeshRenderer>().sharedMaterial = m;*/
+		MaterialPropertyBlock block = new MaterialPropertyBlock();
+		block.SetColor("_BaseColor", color);
+		GetComponentInChildren<MeshRenderer>().SetPropertyBlock(block);
 	}
 }
