@@ -44,9 +44,10 @@ public class GameManager : MonoBehaviour
 
         // all players added
         Debug.Log("enable moving");
+        localController.moveable = true;
         for (int i = 0; i < pcs.Count; i++)
         {
-
+            pcs[i].moveable = true;
         }
 
         intitialized = true;
