@@ -3146,6 +3146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b53649c6cbec5174cafed2503f1d826e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerPrefab: {fileID: 5740784158853354640, guid: 1a0123a98cc8b404dbadb0703e73a6c0,
+    type: 3}
   randomMessage: {fileID: 1217495774}
   MainMenuPanel: {fileID: 41122557}
   DrivePanel: {fileID: 868872328}

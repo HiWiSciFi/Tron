@@ -54,7 +54,7 @@ public static class newNetworkCommunication {
 		byte[] buffer = Receive();
 		ID = buffer[1];
 		Debug.Log("ID " + ID + " assigned to local player");
-		color = new Color(buffer[2], buffer[3], buffer[4]);
+		color = new Color(buffer[3], buffer[4], buffer[5]);
 		Debug.Log("Color " + color.r + " " + color.g + " " + color.b + " assigned to local player");
 
 		Debug.Log("Handshake successful");
