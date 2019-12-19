@@ -83,7 +83,7 @@ namespace TronServerNeu
             }
             temp = freieIDs;
             freieIDs = new Stack<byte>();
-            while (freieIDs.Count > 0)
+            while (temp.Count > 0)
             {
                 freieIDs.Push(temp.Pop());
             }
