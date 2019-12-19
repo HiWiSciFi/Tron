@@ -259,23 +259,24 @@ namespace TronServerNeu
         private static void UpdateData()
         {
             UpdateLobyData();
+            UpdatePendingData();
         }
 
         private static void UpdateLobyData()
         {
             for (int i = 0; i < inLobyPlayers.Count; i++)
             {
-                if (inLobyPlayers[i].socket.Available > 0) {
+                while (inLobyPlayers[i].socket.Available > 0) {
                     byte[][] data = NetworkProtokoll.SplitInformation(NetworkProtokoll.Receive(inLobyPlayers[i].socket));
                     for(int j = 0; j < data.Length; j++)
                     {
-                        Swichero(data[j],inLobyPlayers[i]);
+                        InLobySwichero(data[j],inLobyPlayers[i]);
                     }
                 }
             }
         }
 
-        private static void Swichero(byte[] data, Player player)
+        private static void InLobySwichero(byte[] data, Player player)
         {
             switch (data[0])
             {
@@ -338,7 +339,27 @@ namespace TronServerNeu
 
         private static void UpdatePendingData()
         {
+            for (int i = 0; i < pendingPlayers.Count; i++)
+            {
+                while (pendingPlayers[i].socket.Available > 0)
+                {
+                    byte[][] data = NetworkProtokoll.SplitInformation(NetworkProtokoll.Receive(pendingPlayers[i].socket));
+                    for (int j = 0; j < data.Length; j++)
+                    {
+                        PendingSwichero(data[j], pendingPlayers[i]);
+                    }
+                }
+            }
+        }
 
+        public static void PendingSwichero(byte[] data, Player player)
+        {
+            switch (data[0])
+            {
+
+                
+
+            }
         }
 
         private static void AddPendingPlayer(Player player)
