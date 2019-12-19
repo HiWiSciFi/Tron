@@ -53,7 +53,7 @@ namespace TronServerNeu
 
             Loop();
 
-            StopFaktor();
+            StopServer();
             
         }
 
@@ -379,6 +379,8 @@ namespace TronServerNeu
                 Console.WriteLine("Player: " + players[0].ID + "removed");
 
             }
+            Console.WriteLine("Stop server");
+            Environment.Exit(0);
         }
 
         private static bool SocketConnected(Socket s)
