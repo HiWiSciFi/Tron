@@ -7,8 +7,7 @@ public class PlayerController : NetworkBehaviour {
 
 	// general variables
 	public byte ID = 0;
-	private bool _dead = false;
-	public bool dead { get { return _dead; } set { _dead = value; StopCoroutine(sendData()); } }
+	public bool dead { get { return dead; } set { dead = value; StopCoroutine(sendData()); } }
 
 	// movement variables
 	private const float movingSpeed = 5.0f;
@@ -22,6 +21,7 @@ public class PlayerController : NetworkBehaviour {
 	// mouse variables
 	private float rotY = 0f;
 	private const float rotationStrength = 100.0f;
+	// private Quaternion q = new Quaternion(0, 0, 0, Quaternion.Identity);
 	
 	private void Start() {
 		
@@ -100,6 +100,11 @@ public class PlayerController : NetworkBehaviour {
 
 	public void setColor(Color color)
 	{
+		/*Material m = new Material(GetComponentInChildren<MeshRenderer>().sharedMaterial.shader);
+		m.name = "generated material";
+		m.CopyPropertiesFromMaterial(GetComponentInChildren<MeshRenderer>().sharedMaterial);
+		m.SetColor("_Color", color);
+		GetComponentInChildren<MeshRenderer>().sharedMaterial = m;*/
 		MaterialPropertyBlock block = new MaterialPropertyBlock();
 		block.SetColor("_BaseColor", color);
 		GetComponentInChildren<MeshRenderer>().SetPropertyBlock(block);
