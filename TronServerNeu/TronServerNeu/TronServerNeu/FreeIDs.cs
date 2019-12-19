@@ -81,7 +81,13 @@ namespace TronServerNeu
                 freieIDs.Push(vergleichswert);
 
             }
-            //umdrehen
+            temp = freieIDs;
+            freieIDs = new Stack<byte>();
+            while (freieIDs.Count > 0)
+            {
+                freieIDs.Push(temp.Pop());
+            }
+
         }
     }
 }

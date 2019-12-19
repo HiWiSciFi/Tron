@@ -345,7 +345,7 @@ namespace TronServerNeu
 
                 byte[] infoToBroadcast = new byte[] { NetworkProtokoll.ID.info, inLobbyPlayers[i].ID, 0,0,0 };
 
-                Array.Copy(inLobbyPlayers[i].color, 0, infoToBroadcast, 3, 3);
+                Array.Copy(inLobbyPlayers[i].color, 0, infoToBroadcast, 2, 3);
 
                 NetworkProtokoll.Broadcast(inLobyPlayersWhithoutPlayer,infoToBroadcast);
                 Console.WriteLine("--");
