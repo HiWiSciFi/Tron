@@ -257,7 +257,7 @@ namespace TronServerNeu
             player.color[2] = (byte)new Random().Next(0, 255);
             NetworkProtokoll.Send(player.socket,new byte[] { NetworkProtokoll.ID.info, 1,player.ID,player.color[0],player.color[1],player.color[2]});
             //loby?
-            if (inLobbyPlayers.Count == 0 && pendingPlayers.Count > minLobySzise) 
+            if (inLobbyPlayers.Count == 0 && pendingPlayers.Count >= minLobySzise) 
             {
                 NewLoby();    
             }
