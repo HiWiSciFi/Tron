@@ -21,6 +21,9 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
+        IPAddressField.text = PlayerPrefs.GetString("IP", "");
+        PortField.text = PlayerPrefs.GetString("PORT", "");
+
         MainMenuPanel.SetActive(true);
         DrivePanel.SetActive(false);
         newRandomMessage();
@@ -72,6 +75,9 @@ public class MainMenuManager : MonoBehaviour
 
     public void ConnectButtonClicked()
     {
+        PlayerPrefs.SetString("IP", IPAddressField.text);
+        PlayerPrefs.SetString("PORT", PortField.text);
+        PlayerPrefs.Save();
         PopupPanel.SetActive(true);
         ConnectButton.SetActive(false);
         BackButton.SetActive(false);
