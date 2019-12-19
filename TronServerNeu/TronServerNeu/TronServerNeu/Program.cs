@@ -336,6 +336,7 @@ namespace TronServerNeu
         {
             freeIDs.Reorganise();
 
+            pendingPlayers.AddRange(inLobbyPlayers);
             inLobbyPlayers = new List<Player>(pendingPlayers.Take(50));
             pendingPlayers.RemoveRange(0, (pendingPlayers.Count < 50)?pendingPlayers.Count:50);
             NetworkProtokoll.Broadcast(inLobbyPlayers,new byte[] { NetworkProtokoll.ID.startLoby, 1, 0});
