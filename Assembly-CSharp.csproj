@@ -73,7 +73,6 @@
     <Compile Include="Assets\Scripts\Menu\ResManager.cs" />
     <Compile Include="Assets\Scripts\Network\NetworkBehaviour.cs" />
     <Compile Include="Assets\Scripts\Network\NetworkCommunication.cs" />
-    <Compile Include="Assets\Scripts\Network\newNetworkCommunication.cs" />
     <None Include="Assets\Materials\NewSurfaceShader.shader" />
     <None Include="Assets\BuildResources\settings.txt" />
     <None Include="Assets\BuildResources\Messages.txt" />

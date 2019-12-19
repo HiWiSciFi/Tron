@@ -79,13 +79,13 @@ public class PlayerController : NetworkBehaviour {
 
 		if (local && Input.GetKeyDown(KeyCode.Escape))
 		{
-			newNetworkCommunication.Disconnect();
+			NetworkCommunication.Disconnect();
 		}
 	}
 
 	IEnumerator sendData()
 	{
-		newNetworkCommunication.SendUpdate(this);
+		NetworkCommunication.SendUpdate(this);
 		yield return new WaitForSeconds(0.1f);
 	}
 

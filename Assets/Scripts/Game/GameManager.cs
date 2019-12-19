@@ -27,9 +27,9 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             Debug.Log("Fun");
-            while (!newNetworkCommunication.DataAvailable) { yield return null; }
+            while (!NetworkCommunication.DataAvailable) { yield return null; }
 
-            buffer = newNetworkCommunication.Receive();
+            buffer = NetworkCommunication.Receive();
             Debug.Log(buffer.Length);
             if (buffer.Length > 6)
                 break;
@@ -60,10 +60,10 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (intitialized && newNetworkCommunication.DataAvailable)
+        if (intitialized && NetworkCommunication.DataAvailable)
         {
             Debug.Log("thingies");
-            byte[] buffer = newNetworkCommunication.Receive();
+            byte[] buffer = NetworkCommunication.Receive();
             if (buffer[0] == 0)
             {
                 // standard

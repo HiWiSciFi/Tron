@@ -1,192 +1,115 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
 using System;
+using System.Net;
+using System.Collections.Generic;
+using System.Net.Sockets;
+using UnityEngine;
 using System.Linq;
-using System.Threading;
+using UnityEngine.SceneManagement;
 
-public static class NetworkCommunication
-{
-    static TcpClient client;
-    static ASCIIEncoding asen = new ASCIIEncoding();
-    static NetworkStream stream;
-    public static Controller localPlayer;
-    /// <summary>
-    /// true, if a connection exists and data is available
-    /// </summary>
-    public static bool DataAvailable { get { return stream != null ? stream.DataAvailable : false; } }
+public static class NetworkCommunication {
 
-    public static bool Connect(string IP, int port, int version, ref int ID)
-    {
-        client = new TcpClient();
-        Debug.Log("Connecting...");
-        client.Connect(IP, port);
-        Debug.Log("Connected");
+	private static TcpClient client;
+	private static NetworkStream stream;
+	public const byte VERSION = 1;
 
-        stream = client.GetStream();
+	public static bool DataAvailable { get { return stream != null ? stream.DataAvailable : false; } }
 
-        Debug.Log("Matching versions...");
-        byte[] vB = new byte[4];
-        stream.Read(vB, 0, 4);
-        int v = BitConverter.ToInt32(vB, 0);
-        Debug.Log("Client version is " + version);
-        Debug.Log("Server version is " + v);
-        stream.Write(BitConverter.GetBytes(version), 0, 4);
+	/// <summary>
+	/// disconnect from server
+	/// </summary>
+	public static void Disconnect()
+	{
+		stream.Close();
+		stream.Dispose();
+		client.Close();
+		stream = null;
+		client = null;
+		SceneManager.LoadScene(0);
+	}
 
-        if (v != version)
-        {
-            Debug.LogWarning("Game version does not matching server version");
-            return false;
-        }
+	/// <summary>
+	/// Connects to a server and does the handshake
+	/// </summary>
+	/// <param name="IP">The server hostname</param>
+	/// <param name="PORT">The server Port</param>
+	/// <returns>Error Codes: 0 = everthing fine, 1 = could not connect, 2 = versions not matching</returns>
+	public static int Connect(string IP, int PORT, out Color color, out byte ID) {
+		try {
+			Debug.Log("Connecting to " + IP + " at " + PORT + "...");
+			client = new TcpClient();
+			client.Connect(IP, PORT);
+			stream = client.GetStream();
+			Debug.Log("Connected");
+		} catch {
+			Debug.LogError("Could not connect to " + IP + " at " + PORT);
+			color = Color.black;
+			ID = 0;
+			return 1;
+		}
 
-        Debug.Log("Server and Client version matching");
-        Debug.Log("Request Player ID...");
-        byte[] b = new byte[4];
-        stream.Read(b, 0, 4);
-        ID = BitConverter.ToInt32(b, 0);
-        Debug.Log("new ID is " + ID);
+		// handshake
+		while (!DataAvailable);
+		byte version = Receive()[0];
+		stream.Write(new byte[] { 1, VERSION }, 0, 2);
 
-        Debug.Log("Requesting other players...");
-        b = new byte[4];
-        stream.Read(b, 0, 4);
-        int playerAmount = BitConverter.ToInt32(b, 0);
-        Debug.Log("There are " + playerAmount + " players to add");
-        for (int i = 0; i < playerAmount; i++)
-        {
-            b = new byte[4];
-            stream.Read(b, 0, 4);
-            int newID = BitConverter.ToInt32(b, 0);
-            Debug.Log("Adding player with ID " + newID);
-        }
+		if (version != VERSION)
+		{
+			Debug.LogError("Server and client versions not matching - Server: " + version + " Client: " + VERSION);
+			color = Color.black;
+			ID = 0;
+			return 2;
+		}
+		else
+		{
+			Debug.Log("Versions matching");
+		}
 
-        return true;
-    }
+		while (!DataAvailable);
+		byte[] buffer = Receive();
+		ID = buffer[2];
+		Debug.Log("ID " + ID + " assigned to local player");
+		color = new Color(buffer[3], buffer[4], buffer[5]);
+		Debug.Log("Color " + color.r + " " + color.g + " " + color.b + " assigned to local player");
 
-    public static void Disconnect()
-    {
-        client.Close();
-        stream = null;
-        client = null;
-    }
+		Debug.Log("Handshake successful");
+		return 0;
+	}
 
-    static Thread t = new Thread(new ThreadStart(DataRead));
+	/// <summary>
+	/// Send the standard data package to server
+	/// </summary>
+	/// <param name="info">The local playerController</param>
+	public static void SendUpdate(PlayerController info)
+	{
+		List<byte> IIDs = new List<byte>();
+		List<byte> information = new List<byte>();
 
-    private static Transform data;
-    private static Rigidbody datarb;
-    public static void ReadData()
-    {
-        if (localPlayer != null)
-        {
-            if (!t.IsAlive)
-            {
-                data = localPlayer.gameObject.transform;
-                datarb = localPlayer.gameObject.GetComponent<Rigidbody>();
-                t.Start();
-            }
-            lock (data)
-            {
-                data = localPlayer.gameObject.transform;
-            }
-            lock (datarb)
-            {
-                datarb = localPlayer.gameObject.GetComponent<Rigidbody>();
-            }
-        }
-    }
+		// IID for standard data pack
+		IIDs.Add(0);
 
-    private static void DataRead()
-    {
-        while (DataAvailable)
-        {
-            byte[] index = new byte[1];
-            stream.Read(index, 0, 1);
-            if (index[0] == 0)
-            {
-                //get information about another player
-                byte[] received = new byte[24];
-                stream.Read(received, 0, 24);
-                int ID = BitConverter.ToInt32(received, 0);
-                Controller[] players = localPlayer.getAllPlayers();
-                for (int i = 0; i < players.Length; i++)
-                {
-                    if (players[i].ID == ID)
-                    {
+		// actual data
+		information.AddRange(BitConverter.GetBytes(info.transform.rotation.eulerAngles.y));
+		information.AddRange(BitConverter.GetBytes(info.transform.position.x));
+		information.AddRange(BitConverter.GetBytes(info.transform.position.z));
+		information.Add(info.boosted);
 
-                    }
-                }
-            }
-            else if (index[0] == 1)
-            {
-                //Player Connected
-                Debug.Log("Player Connected");
-                byte[] received = new byte[4];
-                stream.Read(received, 0, 4);
-                int addedPlayerID = BitConverter.ToInt32(received, 0);
-                Debug.Log("Adding Player " + addedPlayerID);
-            }
-            else if (index[0] == 2)
-            {
-                //Player Disconnected
-                Debug.Log("Player Disconnected");
-                byte[] received = new byte[4];
-                stream.Read(received, 0, 4);
-                int leftPlayerID = BitConverter.ToInt32(received, 0);
-                Debug.Log("Removing Player " + leftPlayerID);
-            }
-            else if (index[0] == 3)
-            {
-                //Ready for Data
-                stream.Write(new byte[] { 0 }, 0, 1);
+		// compile Lists to data package
+		List<byte> package = new List<byte>();
+		package.Add((byte)(IIDs.Count + information.Count));
+		package.AddRange(IIDs);
+		package.AddRange(information);
 
-                //send posX, posZ, rotY, rotW
-                byte[] posX;
-                byte[] posZ;
-                byte[] rotY;
-                byte[] rotW;
+		stream.Write(package.ToArray(), 0, package.Count);
+	}
 
-                lock (data)
-                {
-                    posX = BitConverter.GetBytes(data.position.x);
-                    posZ = BitConverter.GetBytes(data.position.z);
-                    rotY = BitConverter.GetBytes(data.rotation.y);
-                    rotW = BitConverter.GetBytes(data.rotation.w);
-                }
+	public static byte[] Receive()
+	{
+		byte[] header = new byte[1];
+		stream.Read(header, 0, 1);
 
-                byte[] velX;
-                byte[] velZ;
-
-                lock (datarb)
-                {
-                    velX = BitConverter.GetBytes(datarb.velocity.x);
-                    velZ = BitConverter.GetBytes(datarb.velocity.z);
-                }
-
-                byte[] toSend = new byte[24];
-                for (int i = 0; i < toSend.Length; i++)
-                {
-                    if (i < 4)
-                        toSend[i] = posX[i];
-                    else if (i < 8)
-                        toSend[i] = posZ[i];
-                    else if (i < 12)
-                        toSend[i] = rotY[i];
-                    else if (i < 16)
-                        toSend[i] = rotW[i];
-                    else if (i < 20)
-                        toSend[i] = velX[i];
-                    else if (i < 24)
-                        toSend[i] = velZ[i];
-                }
-                stream.Write(toSend, 0, 16);
-            }
-        }
-    }
-
-    public static void SendLinePos(byte ID, Vector3 point)
-    {
-
-    }
+		byte[] data = new byte[header[0]];
+		stream.Read(data, 0, header[0]);
+		
+		return data;
+	}
 }

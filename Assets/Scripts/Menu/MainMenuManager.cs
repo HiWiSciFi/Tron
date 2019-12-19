@@ -91,7 +91,7 @@ public class MainMenuManager : MonoBehaviour
     {
         PopupText.text = "Connecting...";
         yield return null;
-        int result = newNetworkCommunication.Connect(IPAddressField.text, int.Parse(PortField.text), out GameSettings.localColor, out GameSettings.localID);
+        int result = NetworkCommunication.Connect(IPAddressField.text, int.Parse(PortField.text), out GameSettings.localColor, out GameSettings.localID);
 
         if (result == 0)
         {
@@ -105,9 +105,9 @@ public class MainMenuManager : MonoBehaviour
         }
 
         yield return null;
-        while (!newNetworkCommunication.DataAvailable) { yield return null; }
+        while (!NetworkCommunication.DataAvailable) { yield return null; }
 
-        byte[] buffer = newNetworkCommunication.Receive();
+        byte[] buffer = NetworkCommunication.Receive();
         if (buffer[0] == 5)
         {
             Debug.Log("Round begins");
