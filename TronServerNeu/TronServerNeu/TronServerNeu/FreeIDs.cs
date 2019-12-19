@@ -17,7 +17,7 @@ namespace TronServerNeu
 
         public void Push(byte ID)
         {
-            if (freieIDs.Peek() == ID)
+            if (freieIDs.Count > 0 && freieIDs.Peek() == ID)
             {
                 return;
             }
