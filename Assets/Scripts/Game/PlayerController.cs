@@ -19,6 +19,8 @@ public class PlayerController : NetworkBehaviour {
 	public byte boosted = 0;
 	public bool moveable = false;
 
+
+
 	// mouse variables
 	private float rotY = 0f;
 	private const float rotationStrength = 100.0f;
