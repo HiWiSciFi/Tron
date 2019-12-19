@@ -154,8 +154,8 @@ namespace TronServerNeu
         
         private static void Loop()
         {
-            try
-            {
+            //try
+            //{
 
                 while (true)
                 {
@@ -165,11 +165,11 @@ namespace TronServerNeu
 
                 }
 
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            //}
+            //catch(Exception e)
+            //{
+            //    Console.WriteLine(e);
+            //}
         }
 
         private static void HandleConections()
@@ -209,6 +209,7 @@ namespace TronServerNeu
 
                     players.RemoveAt(i);
 
+                    
                     Console.WriteLine("Player removed");
                     Console.WriteLine();
                 }
@@ -411,8 +412,8 @@ namespace TronServerNeu
                         Console.WriteLine("Players notified");
                     }
                 }
+                Console.WriteLine("Player: " + players[0].ID + " removed");
                 players.RemoveAt(0);
-                Console.WriteLine("Player: " + players[0].ID + "removed");
 
             }
             Console.WriteLine("Stop server");
