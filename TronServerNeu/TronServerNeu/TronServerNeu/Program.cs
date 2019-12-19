@@ -11,7 +11,7 @@ namespace TronServerNeu
     class Program
     {
         const int lobySzise = 50;
-        const int minLobySzise = 1;
+        const int minLobySzise = 2;
         private static  IPEndPoint ipEp;
         private static  byte version;
         private static TcpListener listener;
