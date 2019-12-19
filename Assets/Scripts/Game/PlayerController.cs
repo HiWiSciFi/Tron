@@ -7,7 +7,7 @@ public class PlayerController : NetworkBehaviour {
 
 	// general variables
 	public byte ID = 0;
-	public bool dead = false;
+	public bool dead { get { return dead; } set { dead = value; StopCoroutine(sendData()); } }
 
 	// movement variables
 	private const float movingSpeed = 5.0f;
@@ -40,6 +40,10 @@ public class PlayerController : NetworkBehaviour {
 
 			// set rotX for mouse rotation
 			rotY = transform.localRotation.eulerAngles.y;
+		}
+		else
+		{
+			GetComponentInChildren<Camera>().gameObject.SetActive(false);
 		}
 	}
 	
@@ -76,6 +80,12 @@ public class PlayerController : NetworkBehaviour {
 		{
 			newNetworkCommunication.Disconnect();
 		}
+	}
+
+	IEnumerator sendData()
+	{
+		newNetworkCommunication.SendUpdate(this);
+		yield return new WaitForSeconds(0.1f);
 	}
 
 	private IEnumerator BoostCountdown()

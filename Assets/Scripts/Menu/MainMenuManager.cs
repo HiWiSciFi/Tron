@@ -96,7 +96,7 @@ public class MainMenuManager : MonoBehaviour
         if (result == 0)
         {
                 PopupText.text = "Connected";
-                yield return new WaitForSeconds(2);
+                yield return null;
                 PopupText.text = "Waiting for Round begin...";
         }
         else if (result == 1)
