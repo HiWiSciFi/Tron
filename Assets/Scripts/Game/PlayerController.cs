@@ -19,7 +19,7 @@ public class PlayerController : NetworkBehaviour {
 	public byte boosted = 0;
 	public bool moveable = false;
 
-
+	public List<Vector2> linePoints;
 
 	// mouse variables
 	private float rotY = 0f;
