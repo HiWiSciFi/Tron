@@ -5,19 +5,17 @@ using UnityEngine;
 
 public class Line : MonoBehaviour
 {
-    public byte ID;
-    public Controller parentController;
-    private const float defaultOfset = 0;
+    private const float defaultOffset = 0;
     private const float defaultHeight = 3;
 
-    public static Mesh GenerateMesh(List<Vector2> basePoints, float ofset, float height)
+    public static Mesh GenerateMesh(List<Vector2> basePoints, float offset, float height)
     {
         Mesh toReturn = new Mesh();
         toReturn.vertices = new Vector3[basePoints.Count*2];
         for(int i = 0; i < basePoints.Count; i++)
         {
-            toReturn.vertices[i*2] = new Vector3(basePoints[i].x, basePoints[i].y, ofset);
-            toReturn.vertices[(i*2)+1] = new Vector3(basePoints[i].x, basePoints[i].y, ofset + height);
+            toReturn.vertices[i*2] = new Vector3(basePoints[i].x, basePoints[i].y, offset);
+            toReturn.vertices[(i*2)+1] = new Vector3(basePoints[i].x, basePoints[i].y, offset + height);
         }
         
         List<int> tris = new List<int>();
@@ -37,6 +35,6 @@ public class Line : MonoBehaviour
     }
     public static Mesh GenerateMesh(List<Vector2> basePoints)
     {
-        return GenerateMesh(basePoints, defaultOfset, defaultHeight);
+        return GenerateMesh(basePoints, defaultOffset, defaultHeight);
     }
 }

@@ -7,7 +7,8 @@ public class PlayerController : NetworkBehaviour {
 
 	// general variables
 	public byte ID = 0;
-	public bool dead { get { return dead; } set { dead = value; StopCoroutine(sendData()); } }
+	private bool _dead = false;
+	public bool dead { get { return _dead; } set { _dead = value; StopCoroutine(sendData()); } }
 
 	// movement variables
 	private const float movingSpeed = 5.0f;
@@ -17,6 +18,8 @@ public class PlayerController : NetworkBehaviour {
 	private bool boostAvailable = true;
 	public byte boosted = 0;
 	public bool moveable = false;
+
+
 
 	// mouse variables
 	private float rotY = 0f;
@@ -78,13 +81,13 @@ public class PlayerController : NetworkBehaviour {
 
 		if (local && Input.GetKeyDown(KeyCode.Escape))
 		{
-			newNetworkCommunication.Disconnect();
+			NetworkCommunication.Disconnect();
 		}
 	}
 
 	IEnumerator sendData()
 	{
-		newNetworkCommunication.SendUpdate(this);
+		NetworkCommunication.SendUpdate(this);
 		yield return new WaitForSeconds(0.1f);
 	}
 
@@ -100,11 +103,6 @@ public class PlayerController : NetworkBehaviour {
 
 	public void setColor(Color color)
 	{
-		/*Material m = new Material(GetComponentInChildren<MeshRenderer>().sharedMaterial.shader);
-		m.name = "generated material";
-		m.CopyPropertiesFromMaterial(GetComponentInChildren<MeshRenderer>().sharedMaterial);
-		m.SetColor("_Color", color);
-		GetComponentInChildren<MeshRenderer>().sharedMaterial = m;*/
 		MaterialPropertyBlock block = new MaterialPropertyBlock();
 		block.SetColor("_BaseColor", color);
 		GetComponentInChildren<MeshRenderer>().SetPropertyBlock(block);

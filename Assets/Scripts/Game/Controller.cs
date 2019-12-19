@@ -27,7 +27,6 @@ public class Controller : MonoBehaviour
         mc = line.AddComponent<MeshCollider>();
         mf = line.AddComponent<MeshFilter>();
         Line l = line.AddComponent<Line>();
-        l.parentController = this;
         line.layer = 9;
 
         MeshRenderer mr = line.AddComponent<MeshRenderer>();
