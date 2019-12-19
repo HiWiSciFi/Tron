@@ -206,7 +206,8 @@ namespace TronServerNeu
                     {
                         pendingPlayers.Remove(players[i]);
                     }
-                    players[i].socket.Disconnect(false);
+                    players[i].socket.Disconnect(true);
+                    players[i].socket.Dispose();
                     players.RemoveAt(i);
 
                     
@@ -333,6 +334,7 @@ namespace TronServerNeu
         public static void NewLoby()
         {
             inLobbyPlayers = new List<Player>(pendingPlayers.Take(50));
+            pendingPlayers.RemoveRange(0, (pendingPlayers.Count < 50)?pendingPlayers.Count:50);
             NetworkProtokoll.Broadcast(inLobbyPlayers,new byte[] { NetworkProtokoll.ID.startLoby, 1, 0});
             for(int i = 0; i < inLobbyPlayers.Count; i++)
             {

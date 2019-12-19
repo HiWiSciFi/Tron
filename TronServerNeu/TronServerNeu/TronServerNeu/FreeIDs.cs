@@ -30,7 +30,7 @@ namespace TronServerNeu
             byte toRet = freieIDs.Pop();
             try
             {
-                freieIDs.Push(toRet++);
+                freieIDs.Push(toRet+2);
             }
             catch(Exception e)
             {
