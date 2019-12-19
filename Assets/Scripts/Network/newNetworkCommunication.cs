@@ -19,7 +19,7 @@ public static class newNetworkCommunication {
 	/// <param name="IP">The server hostname</param>
 	/// <param name="PORT">The server Port</param>
 	/// <returns>Error Codes: 0 = everthing fine, 1 = could not connect, 2 = versions not matching</returns>
-	public static int Connect(string IP, int PORT) {
+	public static int Connect(string IP, int PORT, out Color color, out byte ID) {
 		try {
 			Debug.Log("Connecting to " + IP + " at " + PORT + "...");
 			client = new TcpClient();
@@ -28,6 +28,8 @@ public static class newNetworkCommunication {
 			Debug.Log("Connected");
 		} catch {
 			Debug.LogError("Could not connect to " + IP + " at " + PORT);
+			color = Color.black;
+			ID = 0;
 			return 1;
 		}
 
@@ -39,6 +41,8 @@ public static class newNetworkCommunication {
 		if (version != VERSION)
 		{
 			Debug.LogError("Server and client versions not matching - Server: " + version + " Client: " + VERSION);
+			color = Color.black;
+			ID = 0;
 			return 2;
 		}
 		else
@@ -48,7 +52,10 @@ public static class newNetworkCommunication {
 
 		while (!DataAvailable);
 		byte[] buffer = Receive();
-
+		ID = buffer[1];
+		Debug.Log("ID " + ID + " assigned to local player");
+		color = new Color(buffer[2], buffer[3], buffer[4]);
+		Debug.Log("Color " + color.r + " " + color.g + " " + color.b + " assigned to local player");
 
 		Debug.Log("Handshake successful");
 		return 0;

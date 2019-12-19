@@ -78,11 +78,14 @@ public class MainMenuManager : MonoBehaviour
         StartCoroutine(connect());
     }
 
+    Color color;
+    byte ID;
+
     IEnumerator connect()
     {
         PopupText.text = "Connecting...";
         yield return null;
-        int result = newNetworkCommunication.Connect(IPAddressField.text, int.Parse(PortField.text));
+        int result = newNetworkCommunication.Connect(IPAddressField.text, int.Parse(PortField.text), out color, out ID);
 
         if (result == 0)
         {
@@ -93,6 +96,18 @@ public class MainMenuManager : MonoBehaviour
         else if (result == 1)
         {
             PopupText.text = "Could not connect to server";
+        }
+
+        yield return null;
+        while (!newNetworkCommunication.DataAvailable) { yield return null; }
+
+        byte[] buffer = newNetworkCommunication.Receive();
+        if (buffer[0] == 5)
+        {
+            //round begins
+            DontDestroyOnLoad(this);
+            SceneManager.LoadScene(1);
+            while (!newNetworkCommunication.DataAvailable) { yield return null; }
         }
     }
 
