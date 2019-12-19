@@ -21,10 +21,10 @@ namespace TronServerNeu
         /// </summary>
         private static List<Player> players;
         /// <summary>
-        /// all players in a Loby 
-        /// in the future a Loby class is planed right now Programm is THE loby
+        /// all players in a Lobby 
+        /// in the future a Lobby class is planed right now Programm is THE lobby
         /// </summary>
-        private static List<Player> inLobyPlayers;
+        private static List<Player> inLobbyPlayers;
         /// <summary>
         /// conected players outside a loby 
         /// </summary>
@@ -118,7 +118,7 @@ namespace TronServerNeu
         {
             freeIDs = new FreeIDs();
             players = new List<Player>();
-            inLobyPlayers = new List<Player>();
+            inLobbyPlayers = new List<Player>();
             pendingPlayers = new List<Player>();
 
             
@@ -187,7 +187,7 @@ namespace TronServerNeu
                     Console.WriteLine();
                     Console.WriteLine("Player " + players[i].ID + " Disconnected");
                     Console.WriteLine("Informing Clients");
-                    if (inLobyPlayers.Contains(players[i]))
+                    if (inLobbyPlayers.Contains(players[i]))
                     {
                         byte[] message = new byte[] { NetworkProtokoll.ID.playerDisconect, 2, players[i].ID };
                         for (int j = 0; j < players.Count; j++)
@@ -198,7 +198,7 @@ namespace TronServerNeu
                             }
                         }
                         Console.WriteLine("Clients informed, removing player");
-                        inLobyPlayers.Remove(players[i]);
+                        inLobbyPlayers.Remove(players[i]);
                     }
                     else
                     {
@@ -264,13 +264,13 @@ namespace TronServerNeu
 
         private static void UpdateLobyData()
         {
-            for (int i = 0; i < inLobyPlayers.Count; i++)
+            for (int i = 0; i < inLobbyPlayers.Count; i++)
             {
-                while (inLobyPlayers[i].socket.Available > 0) {
-                    byte[][] data = NetworkProtokoll.SplitInformation(NetworkProtokoll.Receive(inLobyPlayers[i].socket));
+                while (inLobbyPlayers[i].socket.Available > 0) {
+                    byte[][] data = NetworkProtokoll.SplitInformation(NetworkProtokoll.Receive(inLobbyPlayers[i].socket));
                     for(int j = 0; j < data.Length; j++)
                     {
-                        InLobySwichero(data[j],inLobyPlayers[i]);
+                        InLobySwichero(data[j], inLobbyPlayers[i]);
                     }
                 }
             }
@@ -288,25 +288,25 @@ namespace TronServerNeu
                     broadcast[1] = player.ID;
                     Array.Copy(data, 1, broadcast, 2, data.Length - 1);
 
-                    List<Player> inLobyPlayersWhithoutPlayer = new List<Player>(inLobyPlayers);
+                    List<Player> inLobyPlayersWhithoutPlayer = new List<Player>(inLobbyPlayers);
                     inLobyPlayersWhithoutPlayer.Remove(player);
 
                     NetworkProtokoll.Broadcast(inLobyPlayersWhithoutPlayer, broadcast);
                     break;
 
                 case NetworkProtokoll.ID.col:
-                    for (int i = 0; i < inLobyPlayers.Count; i++)
+                    for (int i = 0; i < inLobbyPlayers.Count; i++)
                     {
-                        if(inLobyPlayers[i].ID == data[1])
+                        if(inLobbyPlayers[i].ID == data[1])
                         {
-                            if (inLobyPlayers.Contains(player))
+                            if (inLobbyPlayers.Contains(player))
                             {
-                                inLobyPlayers[i].dead.Add(player);
-                                if (inLobyPlayers[i].dead.Count > inLobyPlayers.Count / 2)
+                                inLobbyPlayers[i].dead.Add(player);
+                                if (inLobbyPlayers[i].dead.Count > inLobbyPlayers.Count / 2)
                                 {
-                                    NetworkProtokoll.Broadcast(inLobyPlayers,new byte[] {NetworkProtokoll.ID.kill,inLobyPlayers[i].ID });
-                                    AddPendingPlayer(inLobyPlayers[i]);
-                                    if (inLobyPlayers.Count == 0)
+                                    NetworkProtokoll.Broadcast(inLobbyPlayers, new byte[] {NetworkProtokoll.ID.kill, inLobbyPlayers[i].ID });
+                                    AddPendingPlayer(inLobbyPlayers[i]);
+                                    if (inLobbyPlayers.Count == 0)
                                     {
                                         NewLoby();
                                     }
@@ -323,15 +323,15 @@ namespace TronServerNeu
 
         public static void NewLoby()
         {
-            inLobyPlayers = new List<Player>(pendingPlayers.Take(lobySzise));
-            for(int i = 0; i < inLobyPlayers.Count; i++)
+            inLobbyPlayers = new List<Player>(pendingPlayers.Take(lobySzise));
+            for(int i = 0; i < inLobbyPlayers.Count; i++)
             {
-                List<Player> inLobyPlayersWhithoutPlayer = new List<Player>(inLobyPlayers);
-                inLobyPlayersWhithoutPlayer.Remove(inLobyPlayers[i]);
+                List<Player> inLobyPlayersWhithoutPlayer = new List<Player>(inLobbyPlayers);
+                inLobyPlayersWhithoutPlayer.Remove(inLobbyPlayers[i]);
 
-                byte[] infoToBroadcast = new byte[] { NetworkProtokoll.ID.info, inLobyPlayers[i].ID, 0, 0, 0};
+                byte[] infoToBroadcast = new byte[] { NetworkProtokoll.ID.info, inLobbyPlayers[i].ID, 0, 0, 0};
 
-                Array.Copy(inLobyPlayers[i].color, 0, infoToBroadcast, 2, 3);
+                Array.Copy(inLobbyPlayers[i].color, 0, infoToBroadcast, 2, 3);
 
                 NetworkProtokoll.Broadcast(inLobyPlayersWhithoutPlayer,infoToBroadcast);
             }
@@ -371,8 +371,8 @@ namespace TronServerNeu
             }
             else
             {
-                if (inLobyPlayers.Contains(player)) {
-                    inLobyPlayers.Remove(player);
+                if (inLobbyPlayers.Contains(player)) {
+                    inLobbyPlayers.Remove(player);
                     pendingPlayers.Add(player);
                 }
                 else if (!pendingPlayers.Contains(player))
@@ -388,7 +388,7 @@ namespace TronServerNeu
             Console.WriteLine("--------------------------");
             Console.WriteLine("Server stop initiated");
             pendingPlayers = new List<Player>();
-            inLobyPlayers = new List<Player>();
+            inLobbyPlayers = new List<Player>();
             Console.WriteLine("Player sublists cleared ");
             for(int i = 0; i < players.Count; i++)
             {

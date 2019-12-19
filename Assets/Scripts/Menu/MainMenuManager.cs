@@ -13,11 +13,18 @@ public class MainMenuManager : MonoBehaviour
     public InputField IPAddressField;
     public InputField PortField;
 
+    public GameObject ConnectButton;
+    public GameObject BackButton;
+    public GameObject CancelButton;
+    public GameObject PopupPanel;
+    public Text PopupText;
+
     private void Start()
     {
         MainMenuPanel.SetActive(true);
         DrivePanel.SetActive(false);
         newRandomMessage();
+        PopupPanel.SetActive(false);
     }
 
     private const string messagesFile = "Assets/BuildResources/Messages.txt";
@@ -65,7 +72,36 @@ public class MainMenuManager : MonoBehaviour
 
     public void ConnectButtonClicked()
     {
-        newNetworkCommunication.Connect(IPAddressField.text, int.Parse(PortField.text));
+        PopupPanel.SetActive(true);
+        ConnectButton.SetActive(false);
+        BackButton.SetActive(false);
+        StartCoroutine(connect());
+    }
+
+    IEnumerator connect()
+    {
+        PopupText.text = "Connecting...";
+        yield return null;
+        int result = newNetworkCommunication.Connect(IPAddressField.text, int.Parse(PortField.text));
+
+        if (result == 0)
+        {
+                PopupText.text = "Connected";
+                yield return new WaitForSeconds(2);
+                PopupText.text = "Waiting for Round begin...";
+        }
+        else if (result == 1)
+        {
+            PopupText.text = "Could not connect to server";
+        }
+    }
+
+    public void CancelButtonClicked()
+    {
+        StopCoroutine(connect());
+        PopupPanel.SetActive(false);
+        ConnectButton.SetActive(true);
+        BackButton.SetActive(true);
     }
 
     public void QuitButtonClicked()
