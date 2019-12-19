@@ -85,6 +85,10 @@ public class PlayerController : NetworkBehaviour {
 
 	public void setColor(Color color)
 	{
-		GetComponentInChildren<MeshRenderer>().sharedMaterial.SetColor("_Color", color);
+		Material m = new Material(GetComponentInChildren<MeshRenderer>().sharedMaterial.shader);
+		m.name = "generated material";
+		m.CopyPropertiesFromMaterial(GetComponentInChildren<MeshRenderer>().sharedMaterial);
+		m.SetColor("_Color", color);
+		GetComponentInChildren<MeshRenderer>().sharedMaterial = m;
 	}
 }
