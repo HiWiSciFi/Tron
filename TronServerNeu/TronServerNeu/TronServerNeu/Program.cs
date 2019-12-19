@@ -191,7 +191,7 @@ namespace TronServerNeu
                     Console.WriteLine("Informing Clients");
                     if (inLobbyPlayers.Contains(players[i]))
                     {
-                        byte[] message = new byte[] { NetworkProtokoll.ID.playerDisconect, 2, players[i].ID };
+                        byte[] message = new byte[] { NetworkProtokoll.ID.playerDisconect, players[i].ID };
                         for (int j = 0; j < players.Count; j++)
                         {
                             if (j != i)
@@ -201,6 +201,7 @@ namespace TronServerNeu
                         }
                         Console.WriteLine("Clients informed, removing player");
                         inLobbyPlayers.Remove(players[i]);
+                        //TODO besserMachen
                     }
                     else
                     {
@@ -258,7 +259,7 @@ namespace TronServerNeu
             player.color[0] = (byte)r.Next(0, 255);
             player.color[1] = (byte)r.Next(0, 255);
             player.color[2] = (byte)r.Next(0, 255);
-            NetworkProtokoll.Send(player.socket,new byte[] { NetworkProtokoll.ID.info, 1,player.ID,player.color[0],player.color[1],player.color[2]});
+            NetworkProtokoll.Send(player.socket,new byte[] { NetworkProtokoll.ID.info, player.ID,player.color[0],player.color[1],player.color[2]});
             //loby?
             if (inLobbyPlayers.Count == 0 && pendingPlayers.Count >= minLobySzise) 
             {
@@ -277,11 +278,8 @@ namespace TronServerNeu
             for (int i = 0; i < inLobbyPlayers.Count; i++)
             {
                 while (inLobbyPlayers[i].socket.Available > 0) {
-                    byte[][] data = NetworkProtokoll.SplitInformation(NetworkProtokoll.Receive(inLobbyPlayers[i].socket));
-                    for(int j = 0; j < data.Length; j++)
-                    {
-                        InLobySwichero(data[j], inLobbyPlayers[i]);
-                    }
+                    byte[] data = NetworkProtokoll.Receive(inLobbyPlayers[i].socket);
+                    InLobySwichero(data, inLobbyPlayers[i]);
                 }
             }
         }
@@ -294,9 +292,8 @@ namespace TronServerNeu
                     player.data = data.Skip(0).ToArray();
 
                     byte[] broadcast = new byte[data.Length + 1];
-                    broadcast[0] = data[0];
-                    broadcast[1] = player.ID;
-                    Array.Copy(data, 1, broadcast, 2, data.Length - 1);
+                    data.CopyTo(broadcast,0);
+                    broadcast[broadcast.Length - 1] = player.ID;
 
                     List<Player> inLobyPlayersWhithoutPlayer = new List<Player>(inLobbyPlayers);
                     inLobyPlayersWhithoutPlayer.Remove(player);
@@ -339,14 +336,14 @@ namespace TronServerNeu
             pendingPlayers.AddRange(inLobbyPlayers);
             inLobbyPlayers = new List<Player>(pendingPlayers.Take(50));
             pendingPlayers.RemoveRange(0, (pendingPlayers.Count < 50)?pendingPlayers.Count:50);
-            NetworkProtokoll.Broadcast(inLobbyPlayers,new byte[] { NetworkProtokoll.ID.startLoby, 1, 0});
+            NetworkProtokoll.Broadcast(inLobbyPlayers,new byte[] { NetworkProtokoll.ID.startLoby, 0});
 
             for(int i = 0; i < inLobbyPlayers.Count; i++)
             {
                 List<Player> inLobyPlayersWhithoutPlayer = new List<Player>(inLobbyPlayers);
                 inLobyPlayersWhithoutPlayer.Remove(inLobbyPlayers[i]);
 
-                byte[] infoToBroadcast = new byte[] { NetworkProtokoll.ID.info, 1, inLobbyPlayers[i].ID, 0, 0, 0};
+                byte[] infoToBroadcast = new byte[] { NetworkProtokoll.ID.info, inLobbyPlayers[i].ID, 0,0,0 };
 
                 Array.Copy(inLobbyPlayers[i].color, 0, infoToBroadcast, 3, 3);
 
@@ -362,11 +359,10 @@ namespace TronServerNeu
             {
                 while (pendingPlayers[i].socket.Available > 0)
                 {
-                    byte[][] data = NetworkProtokoll.SplitInformation(NetworkProtokoll.Receive(pendingPlayers[i].socket));
-                    for (int j = 0; j < data.Length; j++)
-                    {
-                        PendingSwichero(data[j], pendingPlayers[i]);
-                    }
+                    byte[] data = NetworkProtokoll.Receive(pendingPlayers[i].socket);
+                    
+                        PendingSwichero(data, pendingPlayers[i]);
+                    
                 }
             }
         }
@@ -411,7 +407,7 @@ namespace TronServerNeu
             Console.WriteLine("Player sublists cleared ");
             for(int i = 0; i < players.Count; i++)
             {
-                byte[] message = new byte[] { NetworkProtokoll.ID.playerDisconect, 2, players[0].ID };
+                byte[] message = new byte[] { NetworkProtokoll.ID.playerDisconect, players[0].ID };
                 for (int j = 0; j < players.Count; j++)
                 {
                     if (j != i)
