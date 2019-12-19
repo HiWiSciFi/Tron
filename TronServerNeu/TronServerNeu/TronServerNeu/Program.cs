@@ -147,7 +147,7 @@ namespace TronServerNeu
             Console.WriteLine("Server started");
             Console.WriteLine("----------------------------------");
 
-            NewLoby();
+            //NewLoby();
             
         }
 
@@ -318,6 +318,7 @@ namespace TronServerNeu
                                     AddPendingPlayer(inLobbyPlayers[i]);
                                     if (inLobbyPlayers.Count == 0)
                                     {
+                                        Console.WriteLine("all but one dead");
                                         NewLoby();
                                     }
                                 }
