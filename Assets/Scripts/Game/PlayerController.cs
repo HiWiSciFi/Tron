@@ -25,7 +25,6 @@ public class PlayerController : NetworkBehaviour {
 
 	// mouse variables
 	private float rotY = 0f;
-	private const float rotationStrength = 100.0f;
 	// private Quaternion q = new Quaternion(0, 0, 0, Quaternion.Identity);
 	
 	private void Start() {
@@ -49,6 +48,8 @@ public class PlayerController : NetworkBehaviour {
 
 			// set rotX for mouse rotation
 			rotY = transform.localRotation.eulerAngles.y;
+
+			StartCoroutine(sendData());
 		}
 		else
 		{
@@ -94,10 +95,14 @@ public class PlayerController : NetworkBehaviour {
 
 	IEnumerator sendData()
 	{
-		NetworkCommunication.SendUpdate(this);
-		linePoints.Add(new Vector2(transform.position.x, transform.position.z));
-		line.GetComponent<MeshFilter>().sharedMesh = Line.GenerateMesh(linePoints, 1, 0);
-		yield return new WaitForSeconds(0.1f);
+		while (true)
+		{
+			Debug.Log("Sending updated Data to server");
+			NetworkCommunication.SendUpdate(this);
+			linePoints.Add(new Vector2(transform.position.x, transform.position.z));
+			line.GetComponent<MeshFilter>().sharedMesh = Line.GenerateMesh(linePoints, 1, 0);
+			yield return new WaitForSeconds(0.1f);
+		}
 	}
 
 	private IEnumerator BoostCountdown()
