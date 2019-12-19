@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerController : NetworkBehaviour {
 
+	public MeshFilter line;
+
 	// general variables
 	public byte ID = 0;
 	private bool _dead = false;
@@ -19,7 +21,7 @@ public class PlayerController : NetworkBehaviour {
 	public byte boosted = 0;
 	public bool moveable = false;
 
-	public List<Vector2> linePoints;
+	public List<Vector2> linePoints = new List<Vector2>();
 
 	// mouse variables
 	private float rotY = 0f;
@@ -27,7 +29,11 @@ public class PlayerController : NetworkBehaviour {
 	// private Quaternion q = new Quaternion(0, 0, 0, Quaternion.Identity);
 	
 	private void Start() {
-		
+		GameObject go = new GameObject();
+		go.name = "lineInstance";
+		go.AddComponent<MeshFilter>();
+		MeshRenderer mr = go.AddComponent<MeshRenderer>();
+		mr.sharedMaterial = Resources.Load<Material>("LineMaterial");
 	}
 
 	public void Initialize(bool local, Color color, byte ID)
@@ -88,6 +94,8 @@ public class PlayerController : NetworkBehaviour {
 	IEnumerator sendData()
 	{
 		NetworkCommunication.SendUpdate(this);
+		linePoints.Add(new Vector2(transform.position.x, transform.position.z));
+		line.GetComponent<MeshFilter>().sharedMesh = Line.GenerateMesh(linePoints, 1, 0);
 		yield return new WaitForSeconds(0.1f);
 	}
 
