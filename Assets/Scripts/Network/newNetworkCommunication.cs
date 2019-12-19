@@ -46,6 +46,10 @@ public static class newNetworkCommunication {
 			Debug.Log("Versions matching");
 		}
 
+		while (!DataAvailable);
+		byte[] buffer = Receive();
+
+
 		Debug.Log("Handshake successful");
 		return 0;
 	}

@@ -249,7 +249,7 @@ namespace TronServerNeu
             Console.Out.WriteLine("Player with ID:" + player.ID + " created");
             players.Add(player);
             pendingPlayers.Add(player);
-            //server should not decide colors 
+            //server selects color
             player.color[0] = (byte)new Random().Next(0, 255);
             player.color[1] = (byte)new Random().Next(0, 255);
             player.color[2] = (byte)new Random().Next(0, 255);
