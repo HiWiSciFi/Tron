@@ -97,7 +97,6 @@ public static class newNetworkCommunication {
 		List<byte> package = new List<byte>();
 		package.Add((byte)(IIDs.Count + information.Count));
 		package.AddRange(IIDs);
-		package.Add(2);
 		package.AddRange(information);
 
 		stream.Write(package.ToArray(), 0, package.Count);
@@ -112,21 +111,5 @@ public static class newNetworkCommunication {
 		stream.Read(data, 0, header[0]);
 		
 		return data;
-	}
-
-	public static byte[][] SplitInformation(byte[] data)
-	{
-		byte[] index = data.Take(data[1] - 1).ToArray();
-		byte[] information = data.Skip(data[1] - 1).ToArray();
-
-		byte[][] toReturn = new byte[index.Length / 2][];
-
-		for (int i= 0; i < index.Length / 2; i++)
-		{
-			byte[] currentIndex = index.Skip(i * 2).ToArray().Take(2).ToArray();
-			toReturn[i] = new byte[currentIndex[1] + 1];
-			toReturn[i][0] = currentIndex[0];
-		}
-		return toReturn;
 	}
 }

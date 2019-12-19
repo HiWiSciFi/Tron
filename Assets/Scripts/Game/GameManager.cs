@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public GameObject PlayerPrefab;
     public List<PlayerController> pcs = new List<PlayerController>();
-
+    private bool intitialized = false;
     public void OnEnable()
     {
         StartCoroutine(InitializeScene());
@@ -26,20 +26,30 @@ public class GameManager : MonoBehaviour
         PlayerController pc;
         while (true)
         {
+            Debug.Log("Fun");
             while (!newNetworkCommunication.DataAvailable) { yield return null; }
 
             buffer = newNetworkCommunication.Receive();
-            if (buffer.Length > 5)
+            Debug.Log(buffer.Length);
+            if (buffer.Length > 6)
                 break;
             // create player
             player = Instantiate(PlayerPrefab);
             pc = player.GetComponent<PlayerController>();
-            pc.Initialize(false, new Color(buffer[2], buffer[3], buffer[4]), buffer[1]);
+            pc.Initialize(false, new Color(buffer[3], buffer[4], buffer[5]), buffer[2]);
             pcs.Add(pc);
+            Debug.Log("added player with ID " + buffer[2]);
         }
         yield return null;
 
         // all players added
+        Debug.Log("enable moving");
+        for (int i = 0; i < pcs.Count; i++)
+        {
+
+        }
+
+        intitialized = true;
     }
 
     private void Start()
@@ -49,18 +59,20 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (newNetworkCommunication.DataAvailable)
+        if (intitialized && newNetworkCommunication.DataAvailable)
         {
+            Debug.Log("thingies");
             byte[] buffer = newNetworkCommunication.Receive();
             if (buffer[0] == 0)
             {
                 // standard
-                byte ID = buffer[1];
-                float yAngle = BitConverter.ToSingle(buffer, 2);
-                float posX = BitConverter.ToSingle(buffer, 6);
-                float posZ = BitConverter.ToSingle(buffer, 10);
-                byte boosted = buffer[14];
-
+                
+                float yAngle = BitConverter.ToSingle(buffer, 1);
+                float posX = BitConverter.ToSingle(buffer, 5);
+                float posZ = BitConverter.ToSingle(buffer, 9);
+                byte boosted = buffer[13];
+                byte ID = buffer[14];
+                
                 for (int i = 0; i < pcs.Count; i++)
                 {
                     if (pcs[i].ID == ID)
