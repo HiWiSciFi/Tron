@@ -10,11 +10,13 @@ namespace TronServerNeu
 {
     class Program
     {
-        private static int lobySzise = 50;
+        const int lobySzise = 50;
+        const int minLobySzise = 1;
         private static  IPEndPoint ipEp;
         private static  byte version;
         private static TcpListener listener;
         private static FreeIDs freeIDs;
+
 
         /// <summary>
         /// all conected players
@@ -255,6 +257,10 @@ namespace TronServerNeu
             player.color[2] = (byte)new Random().Next(0, 255);
             NetworkProtokoll.Send(player.socket,new byte[] { NetworkProtokoll.ID.info, 1,player.ID,player.color[0],player.color[1],player.color[2]});
             //loby?
+            if (inLobbyPlayers.Count == 0 && pendingPlayers.Count > minLobySzise) 
+            {
+                NewLoby();    
+            }
         }
 
         private static void UpdateData()
