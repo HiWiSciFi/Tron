@@ -18,6 +18,8 @@ namespace TronServerNeu
 
         public byte[] data;
 
+        public List<Player> dead;
+
         
 
         //public float posX, posZ;

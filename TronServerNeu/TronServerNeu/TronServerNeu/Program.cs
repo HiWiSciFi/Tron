@@ -10,6 +10,7 @@ namespace TronServerNeu
 {
     class Program
     {
+        private static int lobySzise = 50;
         private static  IPEndPoint ipEp;
         private static  byte version;
         private static TcpListener listener;
@@ -51,6 +52,8 @@ namespace TronServerNeu
             StartServer();
 
             Loop();
+
+            StopFaktor();
             
         }
 
@@ -118,6 +121,8 @@ namespace TronServerNeu
             inLobyPlayers = new List<Player>();
             pendingPlayers = new List<Player>();
 
+            
+
             Console.WriteLine("prestart procedings have been dealt with");
         }
 
@@ -139,6 +144,9 @@ namespace TronServerNeu
 
             Console.WriteLine("Server started");
             Console.WriteLine("----------------------------------");
+
+            NewLoby();
+            Console.WriteLine("Loby created");
         }
 
         
@@ -280,22 +288,46 @@ namespace TronServerNeu
                     NetworkProtokoll.Broadcast(inLobyPlayersWhithoutPlayer, broadcast);
                     break;
 
-                case NetworkProtokoll.ID.info:
-
-                    break;
-
                 case NetworkProtokoll.ID.col:
-
+                    for (int i = 0; i < inLobyPlayers.Count; i++)
+                    {
+                        if(inLobyPlayers[i].ID == data[1])
+                        {
+                            if (inLobyPlayers.Contains(player))
+                            {
+                                inLobyPlayers[i].dead.Add(player);
+                                if (inLobyPlayers[i].dead.Count > inLobyPlayers.Count / 2)
+                                {
+                                    NetworkProtokoll.Broadcast(inLobyPlayers,new byte[] {NetworkProtokoll.ID.kill,inLobyPlayers[i].ID });
+                                    AddPendingPlayer(inLobyPlayers[i]);
+                                    if (inLobyPlayers.Count == 0)
+                                    {
+                                        NewLoby();
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
                     break;
 
-                case NetworkProtokoll.ID.kill:
 
-                    break;
+            }
+        }
 
-                case NetworkProtokoll.ID.playerDisconect:
+        public static void NewLoby()
+        {
+            inLobyPlayers = new List<Player>(pendingPlayers.Take(lobySzise));
+            for(int i = 0; i < inLobyPlayers.Count; i++)
+            {
+                List<Player> inLobyPlayersWhithoutPlayer = new List<Player>(inLobyPlayers);
+                inLobyPlayersWhithoutPlayer.Remove(inLobyPlayers[i]);
 
-                    break;
+                byte[] infoToBroadcast = new byte[] { NetworkProtokoll.ID.info, inLobyPlayers[i].ID, 0, 0, 0};
 
+                Array.Copy(inLobyPlayers[i].color, 0, infoToBroadcast, 2, 3);
+
+                NetworkProtokoll.Broadcast(inLobyPlayersWhithoutPlayer,infoToBroadcast);
             }
         }
 
@@ -323,6 +355,30 @@ namespace TronServerNeu
                 }
             }
             
+        }
+
+        public static void StopServer()
+        {
+            Console.WriteLine("--------------------------");
+            Console.WriteLine("Server stop initiated");
+            pendingPlayers = new List<Player>();
+            inLobyPlayers = new List<Player>();
+            Console.WriteLine("Player sublists cleared ");
+            for(int i = 0; i < players.Count; i++)
+            {
+                byte[] message = new byte[] { NetworkProtokoll.ID.playerDisconect, 2, players[0].ID };
+                for (int j = 0; j < players.Count; j++)
+                {
+                    if (j != i)
+                    {
+                        NetworkProtokoll.Send(players[j].socket, message);
+                        Console.WriteLine("Players notified");
+                    }
+                }
+                players.RemoveAt(0);
+                Console.WriteLine("Player: " + players[0].ID + "removed");
+
+            }
         }
 
         private static bool SocketConnected(Socket s)
