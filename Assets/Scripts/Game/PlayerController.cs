@@ -27,16 +27,18 @@ public class PlayerController : NetworkBehaviour {
 	private float rotY = 0f;
 	// private Quaternion q = new Quaternion(0, 0, 0, Quaternion.Identity);
 	
-	private void Start() {
-		GameObject go = new GameObject();
-		go.name = "lineInstance";
-		go.AddComponent<MeshFilter>();
-		MeshRenderer mr = go.AddComponent<MeshRenderer>();
-		mr.sharedMaterial = Resources.Load<Material>("LineMaterial");
+	void Awake() {
+		
 	}
 
 	public void Initialize(bool local, Color color, byte ID)
 	{
+		GameObject go = new GameObject();
+		go.name = "lineInstance";
+		line = go.AddComponent<MeshFilter>();
+		MeshRenderer mr = go.AddComponent<MeshRenderer>();
+		mr.sharedMaterial = Resources.Load<Material>("LineMaterial");
+
 		this.local = local;
 		this.ID = ID;
 		setColor(color);
