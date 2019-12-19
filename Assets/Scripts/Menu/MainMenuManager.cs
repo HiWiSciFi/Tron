@@ -78,14 +78,11 @@ public class MainMenuManager : MonoBehaviour
         StartCoroutine(connect());
     }
 
-    Color color;
-    byte ID;
-
     IEnumerator connect()
     {
         PopupText.text = "Connecting...";
         yield return null;
-        int result = newNetworkCommunication.Connect(IPAddressField.text, int.Parse(PortField.text), out color, out ID);
+        int result = newNetworkCommunication.Connect(IPAddressField.text, int.Parse(PortField.text), out GameSettings.localColor, out GameSettings.localID);
 
         if (result == 0)
         {
@@ -104,10 +101,11 @@ public class MainMenuManager : MonoBehaviour
         byte[] buffer = newNetworkCommunication.Receive();
         if (buffer[0] == 5)
         {
+            Debug.Log("Round begins");
+            PopupText.text = "starting round...";
+            yield return null;
             //round begins
-            DontDestroyOnLoad(this);
             SceneManager.LoadScene(1);
-            while (!newNetworkCommunication.DataAvailable) { yield return null; }
         }
     }
 

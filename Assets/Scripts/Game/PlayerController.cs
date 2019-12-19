@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerController : NetworkBehaviour {
 
 	// general variables
-	public int ID = -1;
+	public byte ID = 0;
 	public bool dead = false;
 
 	// movement variables
@@ -24,7 +24,17 @@ public class PlayerController : NetworkBehaviour {
 	// private Quaternion q = new Quaternion(0, 0, 0, Quaternion.Identity);
 	
 	private void Start() {
-		if (local) {
+		
+	}
+
+	public void Initialize(bool local, Color color, byte ID)
+	{
+		this.local = local;
+		this.ID = ID;
+		setColor(color);
+
+		if (local)
+		{
 			Cursor.visible = false;
 			Cursor.lockState = CursorLockMode.Locked;
 
@@ -71,5 +81,10 @@ public class PlayerController : NetworkBehaviour {
 		boosted = 0;
 		yield return new WaitForSeconds(boostCooldownSeconds);
 		boostAvailable = true;
+	}
+
+	public void setColor(Color color)
+	{
+		GetComponentInChildren<MeshRenderer>().sharedMaterial.SetColor("_Color", color);
 	}
 }

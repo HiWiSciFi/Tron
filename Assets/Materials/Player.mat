@@ -22,4 +22,5 @@ Material:
     m_TexEnvs: []
     m_Floats: []
     m_Colors:
-    - Color_1BE8196: {r: 0.04004982, g: 0.04004982, b: 0.9433962, a: 0}
+    - Color_1BE8196: {r: 1, g: 1, b: 1, a: 0}
+    - _Color: {r: 124, g: 124, b: 124, a: 1}
