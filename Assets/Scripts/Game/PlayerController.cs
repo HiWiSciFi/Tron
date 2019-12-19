@@ -16,6 +16,7 @@ public class PlayerController : NetworkBehaviour {
 	private const int boostDurationSeconds = 3;
 	private bool boostAvailable = true;
 	public byte boosted = 0;
+	public bool moveable = false;
 
 	// mouse variables
 	private float rotY = 0f;
@@ -54,8 +55,11 @@ public class PlayerController : NetworkBehaviour {
 				// not local player
 			}
 
-			// move player forward
-			transform.Translate(new Vector3(0, 0, movingSpeed * Time.deltaTime + boosted * boostMultiplier * movingSpeed * Time.deltaTime), Space.Self);
+			if (moveable)
+			{
+				// move player forward
+				transform.Translate(new Vector3(0, 0, movingSpeed * Time.deltaTime + boosted * boostMultiplier * movingSpeed * Time.deltaTime), Space.Self);
+			}
 		}
 	}
 
