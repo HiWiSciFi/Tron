@@ -39,9 +39,9 @@ public class GameManager : MonoBehaviour
             // create player
             player = Instantiate(PlayerPrefab);
             pc = player.GetComponent<PlayerController>();
-            pc.Initialize(false, new Color(buffer[3], buffer[4], buffer[5]), buffer[2]);
+            pc.Initialize(false, new Color(buffer[2], buffer[3], buffer[4]), buffer[1]);
             pcs.Add(pc);
-            Debug.Log("added player with ID " + buffer[2]);
+            Debug.Log("added player with ID " + buffer[1]);
         }
         yield return null;
 

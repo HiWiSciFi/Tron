@@ -52,6 +52,7 @@ public class PlayerController : NetworkBehaviour {
 		}
 		else
 		{
+			Debug.Log("deactivating camera");
 			GetComponentInChildren<Camera>().gameObject.SetActive(false);
 		}
 	}
