@@ -15,9 +15,9 @@ namespace TronServerNeu
             freieIDs.Push(0);
         }
 
-        public void Push(byte ID_)
+        public void Push(byte ID)
         {
-            freieIDs.Push(ID_);
+            freieIDs.Push(ID);
         }
         
         public byte Pop()
@@ -81,6 +81,7 @@ namespace TronServerNeu
                 freieIDs.Push(vergleichswert);
 
             }
+            //umdrehen
         }
     }
 }
