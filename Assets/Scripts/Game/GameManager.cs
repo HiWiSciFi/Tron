@@ -31,8 +31,11 @@ public class GameManager : MonoBehaviour
 
             buffer = NetworkCommunication.Receive();
             Debug.Log(buffer.Length);
-            if (buffer.Length > 6)
+            if (buffer.Length > 5)
+            {
+                Debug.Log("End");
                 break;
+            }
             // create player
             player = Instantiate(PlayerPrefab);
             pc = player.GetComponent<PlayerController>();
