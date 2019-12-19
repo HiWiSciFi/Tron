@@ -148,7 +148,7 @@ namespace TronServerNeu
             Console.WriteLine("----------------------------------");
 
             NewLoby();
-            Console.WriteLine("Loby created");
+            
         }
 
         
@@ -342,6 +342,8 @@ namespace TronServerNeu
                 Array.Copy(inLobbyPlayers[i].color, 0, infoToBroadcast, 3, 3);
 
                 NetworkProtokoll.Broadcast(inLobyPlayersWhithoutPlayer,infoToBroadcast);
+                Console.WriteLine("--");
+                Console.WriteLine("Loby created");
             }
         }
 
