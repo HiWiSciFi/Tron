@@ -70,12 +70,14 @@ namespace TronServerNeu
             //löschung unnötiger IDs
 
             byte vergleichswert = freieIDs.Pop();
-            while (freieIDs.Count > 0 && vergleichswert - 1 == freieIDs.Peek())
+            while (freieIDs.Count > 1 && vergleichswert - 1 == freieIDs.Peek())
             {
                 freieIDs.Pop();
             }
             if (freieIDs.Count == 0) {
-                
+                Push(0);
+            }else if(freieIDs.Count == 1){
+                Pop();
             }
             else {
                 freieIDs.Push(vergleichswert);
