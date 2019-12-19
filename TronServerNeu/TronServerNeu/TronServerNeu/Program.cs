@@ -196,7 +196,7 @@ namespace TronServerNeu
                         {
                             if (j != i)
                             {
-                                NetworkProtokoll.Send(players[j].socket,message);
+                                NetworkProtokoll.Send(players[j].socket, message);
                             }
                         }
                         Console.WriteLine("Clients informed, removing player");
@@ -206,7 +206,7 @@ namespace TronServerNeu
                     {
                         pendingPlayers.Remove(players[i]);
                     }
-
+                    players[i].socket.Disconnect(false);
                     players.RemoveAt(i);
 
                     
@@ -253,9 +253,10 @@ namespace TronServerNeu
             players.Add(player);
             pendingPlayers.Add(player);
             //server selects color
-            player.color[0] = (byte)new Random().Next(0, 255);
-            player.color[1] = (byte)new Random().Next(0, 255);
-            player.color[2] = (byte)new Random().Next(0, 255);
+            Random r = new Random();
+            player.color[0] = (byte)r.Next(0, 255);
+            player.color[1] = (byte)r.Next(0, 255);
+            player.color[2] = (byte)r.Next(0, 255);
             NetworkProtokoll.Send(player.socket,new byte[] { NetworkProtokoll.ID.info, 1,player.ID,player.color[0],player.color[1],player.color[2]});
             //loby?
             if (inLobbyPlayers.Count == 0 && pendingPlayers.Count >= minLobySzise) 
@@ -331,7 +332,7 @@ namespace TronServerNeu
 
         public static void NewLoby()
         {
-            inLobbyPlayers = new List<Player>(pendingPlayers.Take(lobySzise));
+            inLobbyPlayers = new List<Player>(pendingPlayers.Take(50));
             NetworkProtokoll.Broadcast(inLobbyPlayers,new byte[] { NetworkProtokoll.ID.startLoby, 1, 0});
             for(int i = 0; i < inLobbyPlayers.Count; i++)
             {
