@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
                 if (pcs[i].ID == ID)
                 {
                     pcs[i].transform.position = new Vector3(posX, transform.position.y, posZ);
-                    pcs[i].transform.localScale = new Vector3(pcs[i].transform.localScale.x, yAngle, pcs[i].transform.localScale.z);
+                    pcs[i].transform.rotation = new Vector3(pcs[i].transform.localScale.x, yAngle, pcs[i].transform.localScale.z);
                     pcs[i].boosted = boosted;
                 }
             }
