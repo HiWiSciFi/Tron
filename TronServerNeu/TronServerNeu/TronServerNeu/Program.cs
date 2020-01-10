@@ -202,6 +202,11 @@ namespace TronServerNeu
                         Console.WriteLine("Clients informed, removing player");
                         inLobbyPlayers.Remove(players[i]);
                         //TODO besserMachen
+                        if (inLobbyPlayers.Count <= 1)  //vorher == 0 Kann Bugquelle sein!!!
+                        {
+                            Console.WriteLine("all but one dead or disconected");
+                            NewLoby();
+                        }
                     }
                     else
                     {
@@ -313,9 +318,9 @@ namespace TronServerNeu
                                 {
                                     NetworkProtokoll.Broadcast(inLobbyPlayers, new byte[] {NetworkProtokoll.ID.kill, inLobbyPlayers[i].ID });
                                     AddPendingPlayer(inLobbyPlayers[i]);
-                                    if (inLobbyPlayers.Count == 0)
+                                    if (inLobbyPlayers.Count <= 1)  //vorher == 0 Kann Bugquelle sein!!!
                                     {
-                                        Console.WriteLine("all but one dead");
+                                        Console.WriteLine("all but one dead or disconected");
                                         NewLoby();
                                     }
                                 }
