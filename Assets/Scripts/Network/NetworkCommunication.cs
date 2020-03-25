@@ -88,7 +88,7 @@ public static class NetworkCommunication {
 		IIDs.Add(0);
 
 		// actual data
-		information.AddRange(BitConverter.GetBytes(info.transform.rotation.eulerAngles.y));
+		information.AddRange(BitConverter.GetBytes(info.transform.rotation.y));
 		information.AddRange(BitConverter.GetBytes(info.transform.position.x));
 		information.AddRange(BitConverter.GetBytes(info.transform.position.z));
 		information.Add(info.boosted);

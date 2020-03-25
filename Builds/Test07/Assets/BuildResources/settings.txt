@@ -1,0 +1,1 @@
+mouseSpeed:2
