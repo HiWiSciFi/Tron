@@ -53,6 +53,8 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+Builds/*
+
 # Crashlytics generated file
 crashlytics-build.properties
 Library/LastSceneManagerSetup.txt
